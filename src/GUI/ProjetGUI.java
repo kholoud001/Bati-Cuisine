@@ -7,6 +7,7 @@ import services.implementations.ProjetServiceImp;
 import services.interfaces.ProjetService;
 
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class ProjetGUI {
@@ -39,13 +40,17 @@ public class ProjetGUI {
         System.out.print("Enter client ID: ");
         int clientId = scanner.nextInt();
 
-        Client client = new Client(clientId, "SomeName", "0699298965", true);
+        MainGUI mainGUI = new MainGUI(scanner);
+        Optional<Client> clientOptional = mainGUI.viewClient(clientId);
 
-        Projet projet = new Projet(nomProjet, margeBeneficiaire, coutTotal, etatProjet, client);
-
-        projetService.createProject(projet);
-
-        System.out.println("Project added successfully.");
+        if (clientOptional.isPresent()) {
+            Client client = clientOptional.get();
+            Projet projet = new Projet(nomProjet, margeBeneficiaire, coutTotal, etatProjet, client);
+            projetService.createProject(projet);
+            System.out.println("Project added successfully.");
+        } else {
+            System.out.println("Cannot add project: Client not found.");
+        }
 
     }
 

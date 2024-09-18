@@ -6,6 +6,14 @@ public class Client {
     private String telephone;
     private boolean estProfessionel;
 
+    public Client(int id, String name, String telephone, boolean estProfessionel) {
+
+        this.id = id;
+        this.name = name;
+        this.telephone = telephone;
+        this.estProfessionel = estProfessionel;
+    }
+
     public Client(String name, String telephone, boolean estProfessionel) {
         this.name = name;
         this.telephone = telephone;

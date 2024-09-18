@@ -9,7 +9,8 @@ public class Main {
     public static void main(String[] args) throws SQLException {
 
         MainGUI mainGUI = new MainGUI();
-        mainGUI.ConnectionToDB();
+        //mainGUI.ConnectionToDB();
+        mainGUI.addClient();
 
 
     }

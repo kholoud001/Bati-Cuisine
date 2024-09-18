@@ -6,6 +6,7 @@ import services.implementations.ClientServiceImp;
 import services.interfaces.ClientService;
 
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class MainGUI {
@@ -39,5 +40,20 @@ public class MainGUI {
         clientService.createClient(client);
         System.out.println("Client added successfully.");
     }
+
+    public Optional<Client> viewClient(int clientId) throws SQLException {
+        Optional<Client> clientOptional = clientService.getClientById(clientId);
+        if (clientOptional.isPresent()) {
+            Client client = clientOptional.get();
+            System.out.println("Client ID: " + client.getId());
+            System.out.println("Name: " + client.getName());
+            System.out.println("Telephone: " + client.getTelephone());
+            System.out.println("Professional: " + client.isEstProfessionel());
+        } else {
+            System.out.println("Client not found.");
+        }
+        return clientOptional;
+    }
+
 
 }

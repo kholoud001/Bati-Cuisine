@@ -6,6 +6,7 @@ import repositories.interfaces.ClientRep;
 import services.interfaces.ClientService;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class ClientServiceImp implements ClientService {
 
@@ -17,5 +18,9 @@ public class ClientServiceImp implements ClientService {
 
     public void createClient(Client client) throws SQLException {
         clientRep.save(client);
+    }
+
+    public Optional<Client> getClientById(int id) throws SQLException {
+        return clientRep.findById(id);
     }
 }

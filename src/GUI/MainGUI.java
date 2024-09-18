@@ -9,7 +9,7 @@ public class MainGUI {
     public MainGUI() {
 
     }
-    
+
     public void ConnectionToDB() throws SQLException {
         DatabaseConnection database= DatabaseConnection.getInstance();
     }

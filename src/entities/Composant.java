@@ -5,16 +5,18 @@ public abstract class Composant {
     private String nom;
     private double tauxTVA;
     private String typeComposant;
+    private Projet projet;
 
 
     public static final String Type_Materiel="Materiel";
     public static final String Type_Main="Main-d'oeuvre";
 
-    public Composant(int id, String nom, double tauxTVA, String typeComposant) {
+    public Composant(int id, String nom, double tauxTVA, String typeComposant, Projet projet) {
         this.id = id;
         this.nom = nom;
         this.tauxTVA = tauxTVA;
         setTypeComposant(typeComposant);
+        this.projet = projet;
     }
 
 
@@ -53,5 +55,13 @@ public abstract class Composant {
         }else {
             System.out.println("TypeComposant Incorrecte.il faut être  'Matériel' ou 'Main-d'œuvre'");
         }
+    }
+
+    public Projet getProjet() {
+        return projet;
+    }
+
+    public void setProjet(Projet projet) {
+        this.projet = projet;
     }
 }

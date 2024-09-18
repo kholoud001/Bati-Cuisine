@@ -10,8 +10,7 @@ public class Projet {
     private EtatProjet etatProjet;
     private Client client;
     
-    public Projet(int id, String nomProjet, double margeBeneficiaire, double coutTotal, EtatProjet etatProjet, Client client) {
-        this.id = id;
+    public Projet( String nomProjet, double margeBeneficiaire, double coutTotal, EtatProjet etatProjet, Client client) {
         this.nomProjet = nomProjet;
         this.margeBeneficiaire = margeBeneficiaire;
         this.coutTotal = coutTotal;

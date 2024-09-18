@@ -13,9 +13,9 @@ public class MainGUI {
     private final ClientService clientService;
     private Scanner scanner;
 
-    public MainGUI() throws SQLException {
+    public MainGUI(Scanner scanner) throws SQLException {
         this.clientService=new ClientServiceImp();
-        this.scanner=new Scanner(System.in);
+        this.scanner=scanner;
 
     }
 

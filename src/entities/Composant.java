@@ -19,6 +19,13 @@ public abstract class Composant {
         this.projet = projet;
     }
 
+    public Composant( String nom, double tauxTVA, String typeComposant, Projet projet) {
+        this.nom = nom;
+        this.tauxTVA = tauxTVA;
+        setTypeComposant(typeComposant);
+        this.projet = projet;
+    }
+
 
 
     public int getId() {

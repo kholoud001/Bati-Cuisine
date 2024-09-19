@@ -22,6 +22,17 @@ public class Projet {
         this.client = client;
     }
 
+    public Projet( int id,String nomProjet,double surface, double tvaProjet, double margeBeneficiaire, double coutTotal, EtatProjet etatProjet, Client client) {
+        this.id = id;
+        this.nomProjet = nomProjet;
+        this.surface = surface;
+        this.tvaProjet = tvaProjet;
+        this.margeBeneficiaire = margeBeneficiaire;
+        this.coutTotal = coutTotal;
+        this.etatProjet = etatProjet;
+        this.client = client;
+    }
+
 
     public int getId() {
         return id;

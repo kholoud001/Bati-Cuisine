@@ -31,11 +31,13 @@ public class ClientDAOImp implements ClientDAO {
                 statement.setString(3, client.getTelephone());
                 statement.setBoolean(4, client.isEstProfessionel());
                 statement.executeUpdate();
-                System.out.println("Client DAO added successfully.");
+                //System.out.println("Client DAO added successfully.");
         } catch (SQLException e) {
            System.out.println(e.getMessage());
         }
     }
+
+
 
 
     public Optional<Client> getById(int id) throws SQLException {

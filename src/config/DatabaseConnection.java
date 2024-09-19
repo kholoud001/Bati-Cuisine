@@ -15,7 +15,7 @@ public class DatabaseConnection {
     private DatabaseConnection() {
         try {
             this.connection = DriverManager.getConnection(url, user, password);
-            System.out.println("Database connection established");
+            //System.out.println("Database connection established");
 
         } catch (SQLException exception) {
             System.out.println("Database Connection Creation Failed : " + exception.getMessage());

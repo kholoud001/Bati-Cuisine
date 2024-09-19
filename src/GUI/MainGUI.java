@@ -11,49 +11,50 @@ import java.util.Scanner;
 
 public class MainGUI {
 
-    private final ClientService clientService;
+
     private Scanner scanner;
 
-    public MainGUI(Scanner scanner) throws SQLException {
-        this.clientService=new ClientServiceImp();
+    public MainGUI(Scanner scanner)  {
         this.scanner=scanner;
-
     }
 
     public void ConnectionToDB() throws SQLException {
         DatabaseConnection database= DatabaseConnection.getInstance();
     }
 
-    public void addClient() throws SQLException {
+    public void displayMenu() throws SQLException {
+        boolean exit = false;
+        while(!exit){
+            System.out.println("=== Menu Principal ===");
+            System.out.println("1. Créer un nouveau projet");
+            System.out.println("2. Afficher les projets existants");
+            System.out.println("3. Calculer le coût d'un projet");
+            System.out.println("4. Quitter");
+            System.out.print("Choisissez une option : ");
 
-        System.out.println("******* Add client *******");
-        System.out.println("Enter client name: ");
-        String name = scanner.nextLine();
+            String choice = scanner.nextLine();
+            switch(choice){
+                case "1":
+                    ClientGUI clientGUI = new ClientGUI(scanner);
+                    clientGUI.displayMenuClient();
+                    break;
+                case "2":
+                     break;
+                case "3":
+                     break;
+                case "4":
+                    exit =true;
+                    break;
+                default:
+                    System.out.println("Choix invalid. SVP recommencer.");
+            }
 
-        System.out.println("Enter client telephone: ");
-        String telephone = scanner.nextLine();
-
-        System.out.println("Is the client a professional? (true/false): ");
-        boolean estProfessionel = scanner.nextBoolean();
-
-        Client client = new Client(name, telephone, estProfessionel);
-        clientService.createClient(client);
-        System.out.println("Client added successfully.");
-    }
-
-    public Optional<Client> viewClient(int clientId) throws SQLException {
-        Optional<Client> clientOptional = clientService.getClientById(clientId);
-        if (clientOptional.isPresent()) {
-            Client client = clientOptional.get();
-            System.out.println("Client ID: " + client.getId());
-            System.out.println("Name: " + client.getName());
-            System.out.println("Telephone: " + client.getTelephone());
-            System.out.println("Professional: " + client.isEstProfessionel());
-        } else {
-            System.out.println("Client not found.");
         }
-        return clientOptional;
+
     }
+
+
+
 
 
 }

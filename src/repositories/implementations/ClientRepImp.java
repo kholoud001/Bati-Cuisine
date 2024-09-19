@@ -6,6 +6,7 @@ import entities.Client;
 import repositories.interfaces.ClientRep;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Optional;
 
 public class ClientRepImp implements ClientRep {
@@ -21,5 +22,10 @@ public class ClientRepImp implements ClientRep {
 
     public Optional<Client> findById(int id) throws SQLException {
        return clientDAO.getById(id);
+    }
+
+    public HashMap<Integer, Client> findByName(String name) throws SQLException{
+        return clientDAO.getByName(name);
+
     }
 }

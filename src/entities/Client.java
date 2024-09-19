@@ -4,19 +4,22 @@ public class Client {
     private int id;
     private String name;
     private String telephone;
+    private String address;
     private boolean estProfessionel;
 
-    public Client(int id, String name, String telephone, boolean estProfessionel) {
+    public Client(int id, String name,String address, String telephone,  boolean estProfessionel) {
 
         this.id = id;
         this.name = name;
         this.telephone = telephone;
+        this.address = address;
         this.estProfessionel = estProfessionel;
     }
 
-    public Client(String name, String telephone, boolean estProfessionel) {
+    public Client(String name, String address,  String telephone,boolean estProfessionel) {
         this.name = name;
         this.telephone = telephone;
+        this.address = address;
         this.estProfessionel = estProfessionel;
     }
     public int getId(){
@@ -44,4 +47,12 @@ public class Client {
         this.estProfessionel = estProfessionel;
     }
 
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }

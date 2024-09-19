@@ -6,6 +6,7 @@ import repositories.interfaces.ClientRep;
 import services.interfaces.ClientService;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Optional;
 
 public class ClientServiceImp implements ClientService {
@@ -22,5 +23,9 @@ public class ClientServiceImp implements ClientService {
 
     public Optional<Client> getClientById(int id) throws SQLException {
         return clientRep.findById(id);
+    }
+
+    public HashMap<Integer, Client> getClientByName(String name) throws SQLException{
+        return clientRep.findByName(name);
     }
 }

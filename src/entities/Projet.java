@@ -5,13 +5,17 @@ import enums.EtatProjet;
 public class Projet {
     private int id;
     private String nomProjet;
+    private double surface;
+    private double tvaProjet;
     private double margeBeneficiaire;
     private double coutTotal;
     private EtatProjet etatProjet;
     private Client client;
     
-    public Projet( String nomProjet, double margeBeneficiaire, double coutTotal, EtatProjet etatProjet, Client client) {
+    public Projet( String nomProjet,double surface, double tvaProjet, double margeBeneficiaire, double coutTotal, EtatProjet etatProjet, Client client) {
         this.nomProjet = nomProjet;
+        this.surface = surface;
+        this.tvaProjet = tvaProjet;
         this.margeBeneficiaire = margeBeneficiaire;
         this.coutTotal = coutTotal;
         this.etatProjet = etatProjet;
@@ -65,5 +69,21 @@ public class Projet {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public double getSurface() {
+        return surface;
+    }
+
+    public void setSurface(double surface) {
+        this.surface = surface;
+    }
+
+    public double getTvaProjet() {
+        return tvaProjet;
+    }
+
+    public void setTvaProjet(double tvaProjet) {
+        this.tvaProjet = tvaProjet;
     }
 }

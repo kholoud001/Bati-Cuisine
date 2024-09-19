@@ -17,13 +17,15 @@ public class ProjetDAOImp implements ProjetDAO {
     }
 
     public void add(Projet projet) throws SQLException {
-        String query="INSERT INTO projets (nomprojet, margebeneficiaire, couttotal, etatprojet, client_id) VALUES (?, ?, ?, ?::etat_projet_enum, ?)";
+        String query="INSERT INTO projets (nomprojet,surface,tvaProjet, margebeneficiaire, couttotal, etatprojet, client_id) VALUES (?, ?,? ,?, ?, ?::etat_projet_enum, ?)";
         try(PreparedStatement stmt=connection.prepareStatement(query)){
             stmt.setString(1, projet.getNomProjet());
-            stmt.setDouble(2,projet.getMargeBeneficiaire());
-            stmt.setDouble(3,projet.getCoutTotal());
-            stmt.setString(4,projet.getEtatProjet().toString());
-            stmt.setInt(5, projet.getClient().getId());
+            stmt.setDouble(2,projet.getSurface());
+            stmt.setDouble(3,projet.getTvaProjet());
+            stmt.setDouble(4,projet.getMargeBeneficiaire());
+            stmt.setDouble(5,projet.getCoutTotal());
+            stmt.setString(6,projet.getEtatProjet().toString());
+            stmt.setInt(7, projet.getClient().getId());
             stmt.executeUpdate();
 
         } catch (SQLException e) {

@@ -1,5 +1,5 @@
 --Client Table
- CREATE TABLE  clients(
+ CREATE TABLE IF NOT EXISTS clients(
      id SERIAL PRIMARY KEY ,
      nom VARCHAR(255) NOT NULL,
      adresse VARCHAR(255) NOT NULL,
@@ -14,6 +14,8 @@ CREATE TYPE etat_projet_enum AS ENUM ('EN_COURS','TERMINE','ANNULE');
 CREATE TABLE IF NOT EXISTS projets(
     id SERIAL PRIMARY KEY,
     nomProjet VARCHAR(255) NOT NULL,
+    surface DOUBLE PRECISION NOT NULL ,
+    tvaProjet DOUBLE PRECISION NOT NULL,
     margeBeneficiaire DOUBLE PRECISION,
     coutTotal DOUBLE PRECISION,
     etatProjet etat_projet_enum NOT NULL,

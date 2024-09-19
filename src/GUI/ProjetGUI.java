@@ -45,8 +45,9 @@ public class ProjetGUI {
 
 
         //partie ajout material
-        addMaterial(projet);
-        addMainOeuvre(projet);
+        addMaterialsLoop(projet);
+        //ajout main oeuvre
+        addLaborLoop(projet);
 
         System.out.println("Calcul du coût en cours...");
 
@@ -89,6 +90,25 @@ public class ProjetGUI {
         System.out.println("Project added successfully.");
     }
 
+    //loops
+    private void addMaterialsLoop(Projet projet) throws SQLException {
+        String choixMat;
+        do {
+            addMaterial(projet);
+            System.out.println("Voulez-vous ajouter un autre matériau ? (y/n) : ");
+            choixMat = scanner.nextLine().toLowerCase();
+        } while (choixMat.equals("y"));
+    }
+
+    private void addLaborLoop(Projet projet) throws SQLException {
+        String choixMainOeuvre;
+        do {
+            addMainOeuvre(projet);
+            System.out.println("Voulez-vous ajouter un autre type de main-d'œuvre ? (y/n) : ");
+            choixMainOeuvre = scanner.nextLine().toLowerCase();
+        } while (choixMainOeuvre.equals("y"));
+    }
+
     //add material
     public void addMaterial(Projet projet) throws SQLException {
         System.out.println("\n--- Ajout des matériaux ---\n");
@@ -117,7 +137,6 @@ public class ProjetGUI {
 
         Materiel materiel= new Materiel(nomMat,tva,"Materiel",projet,cout_unitaire,cout_tranport,coef,quantite);
         materielService.addMateriel(materiel);
-
         System.out.println("\nMatériau ajouté avec succès !\n");
     }
 
@@ -146,6 +165,7 @@ public class ProjetGUI {
 
         MainOeuvre mainOeuvre = new MainOeuvre(type,tva,"Main-d'oeuvre",projet,taux,heure,facteur);
         mainOeuvreService.createMainOeuvre(mainOeuvre);
+        System.out.println("\nMain-d'œuvre ajoutée avec succès !\n");
 
 
     }

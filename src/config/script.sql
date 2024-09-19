@@ -1,7 +1,8 @@
 --Client Table
- CREATE TABLE IF NOT EXISTS clients(
+ CREATE TABLE  clients(
      id SERIAL PRIMARY KEY ,
      nom VARCHAR(255) NOT NULL,
+     adresse VARCHAR(255) NOT NULL,
      telephone VARCHAR(255) NOT NULL,
      estProfessionel BOOLEAN
  );

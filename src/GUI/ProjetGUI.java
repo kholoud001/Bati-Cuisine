@@ -20,7 +20,7 @@ public class ProjetGUI {
         this.scanner=scanner;
     }
 
-    public void addProjet() throws SQLException {
+    public void addProjet(Client client) throws SQLException {
         System.out.println("***** Add Project ******");
         System.out.println("Enter projet name: ");
         String nomProjet=scanner.nextLine();
@@ -37,20 +37,10 @@ public class ProjetGUI {
         String etat = scanner.nextLine();
         EtatProjet etatProjet = EtatProjet.valueOf(etat.toUpperCase());
 
-        System.out.print("Enter client ID: ");
-        int clientId = scanner.nextInt();
+        Projet projet = new Projet(nomProjet, margeBeneficiaire, coutTotal, etatProjet, client);
+        projetService.createProject(projet);
+        System.out.println("Project added successfully.");
 
-        MainGUI mainGUI = new MainGUI(scanner);
-        Optional<Client> clientOptional = mainGUI.viewClient(clientId);
-
-        if (clientOptional.isPresent()) {
-            Client client = clientOptional.get();
-            Projet projet = new Projet(nomProjet, margeBeneficiaire, coutTotal, etatProjet, client);
-            projetService.createProject(projet);
-            System.out.println("Project added successfully.");
-        } else {
-            System.out.println("Cannot add project: Client not found.");
-        }
 
     }
 

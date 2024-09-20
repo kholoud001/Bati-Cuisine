@@ -14,16 +14,14 @@ public class MainGUI {
 
     private Scanner scanner;
     private ClientService clientService;
-    ClientGUI clientGUI = new ClientGUI(scanner,clientService);
+    ClientGUI clientGUI;
 
 
     public MainGUI(Scanner scanner, ClientService clientService) throws SQLException {
         this.scanner=scanner;
         this.clientService=clientService;
-    }
+        this.clientGUI = new ClientGUI(scanner, clientService);
 
-    public void ConnectionToDB() throws SQLException {
-        DatabaseConnection database= DatabaseConnection.getInstance();
     }
 
     public void displayMenu() throws SQLException {
@@ -42,9 +40,9 @@ public class MainGUI {
                     clientGUI.displayMenuClient();
                     break;
                 case "2":
-                     break;
+                    break;
                 case "3":
-                     break;
+                    break;
                 case "4":
                     exit =true;
                     break;
@@ -55,6 +53,12 @@ public class MainGUI {
         }
 
     }
+
+
+    public void ConnectionToDB() throws SQLException {
+        DatabaseConnection database= DatabaseConnection.getInstance();
+    }
+
 
 
 

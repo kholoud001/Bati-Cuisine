@@ -5,14 +5,17 @@ import entities.MainOeuvre;
 import entities.Materiel;
 import entities.Projet;
 import enums.EtatProjet;
+import services.implementations.CoutServiceImp;
 import services.implementations.MainOeuvreServiceImp;
 import services.implementations.MaterielServiceImp;
 import services.implementations.ProjetServiceImp;
+import services.interfaces.CoutService;
 import services.interfaces.MainOeuvreService;
 import services.interfaces.MaterielService;
 import services.interfaces.ProjetService;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -23,12 +26,16 @@ public class ProjetGUI {
 
     MaterielService materielService= new MaterielServiceImp();
     MainOeuvreService mainOeuvreService= new MainOeuvreServiceImp();
-    ComposantGUI composantGUI = new ComposantGUI(scanner,mainOeuvreService,materielService);
+    ComposantGUI composantGUI ;
+    CoutService coutService= new CoutServiceImp();
 
     public ProjetGUI(Scanner scanner, ProjetService projetService) throws SQLException {
         this.projetService=projetService;
         this.scanner=scanner;
+        this.composantGUI= new ComposantGUI(scanner,mainOeuvreService,materielService);
     }
+
+
 
     public void addProjet(Client client) throws SQLException {
         System.out.println("--- Création d'un Nouveau Projet ---");
@@ -47,11 +54,9 @@ public class ProjetGUI {
         //partie ajout material
         composantGUI.addMaterialsLoop(projet);
         //ajout main oeuvre
-        composantGUI.addLaborLoop(projet);
+        //composantGUI.addLaborLoop(projet);
 
         System.out.println("Calcul du coût en cours...");
-
-
 
         // Project TVA
         System.out.println("Souhaitez-vous appliquer une TVA au projet ? (y/n) : ");
@@ -79,15 +84,41 @@ public class ProjetGUI {
         System.out.println("Calcul du coût en cours...");
 
         //cout totale
-        double coutTotal=0;
-        scanner.nextLine();
+        double coutT= calculCout(projet);
+        double coutTotalTVA= coutService.costMateriauTva(coutT,tvaProjet);
+        System.out.printf("\n**Coût total des matériaux après TVA : %.2f\n\n",coutTotalTVA);
 
-//        System.out.println("Enter project state (EN_COURS, TERMINE, ANNULE): ");
-//        String etat = scanner.nextLine();
-//        EtatProjet etatProjet = EtatProjet.valueOf(etat.toUpperCase());
 
         projetService.updateProject(projet);
-        System.out.println("Project added successfully.");
+        //System.out.println("Project added successfully.");
+    }
+
+
+    public double calculCout(Projet projet) throws SQLException {
+        System.out.println("\n--- Résultat du Calcul ---\n");
+        //nom projet
+        //nom client
+        //adresse chantier
+        //surface
+        System.out.println("\n--- Détail des Coûts ---\n");
+        System.out.println("1. Matériaux :");
+        Collection<Materiel>  materiau= materielService.getAllMaterielByProjectId(projet);
+
+        double coutTotal= coutService.totalCostMateriel(materiau);
+
+        for(Materiel materiel:materiau){
+            double cout = coutService.coutMateriel(materiel);
+            System.out.printf("- %s : %.2f  € (quantité: %.2f m², " +
+                    "coût unitaire: %.2f €/m²,qualité: %.2f ,transport: %.2f €) \n",
+                    materiel.getNom(),cout,materiel.getQuantite(),
+                    materiel.getCoutUnitaire(),materiel.getCoefficientQualite(),materiel.getCoutTransport());
+        }
+        System.out.printf("\n**Coût total des matériaux avant TVA : %.2f\n",coutTotal);
+
+        return coutTotal;
+
+
+
     }
 
 

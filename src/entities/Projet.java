@@ -22,6 +22,10 @@ public class Projet {
         this.client = client;
     }
 
+    public Projet(int id){
+        this.id = id;
+    }
+
     public Projet( int id,String nomProjet,double surface, double tvaProjet, double margeBeneficiaire, double coutTotal, EtatProjet etatProjet, Client client) {
         this.id = id;
         this.nomProjet = nomProjet;

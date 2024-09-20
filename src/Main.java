@@ -12,11 +12,9 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
         ClientService clientService = new ClientServiceImp();
-
         MainGUI mainGUI = new MainGUI(sc,clientService);
         //mainGUI.ConnectionToDB();
         mainGUI.displayMenu();
-        sc.close();
 
 
 

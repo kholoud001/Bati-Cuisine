@@ -20,13 +20,13 @@ public class ClientGUI {
     private final ClientService clientService;
     private Scanner scanner;
     ProjetService projetService= new ProjetServiceImp();
-
-    ProjetGUI projetGUI= new ProjetGUI(scanner,projetService);
+    ProjetGUI projetGUI;
 
 
     public ClientGUI(Scanner scanner,ClientService clientService) throws SQLException {
         this.clientService=clientService;
         this.scanner=scanner;
+        this.projetGUI= new ProjetGUI(scanner,projetService);
     }
 
     public void displayMenuClient() throws SQLException {

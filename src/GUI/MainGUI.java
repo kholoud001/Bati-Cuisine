@@ -13,9 +13,13 @@ public class MainGUI {
 
 
     private Scanner scanner;
+    ClientService clientService;
+    ClientGUI clientGUI = new ClientGUI(scanner,clientService);
 
-    public MainGUI(Scanner scanner)  {
+
+    public MainGUI(Scanner scanner, ClientService clientService) throws SQLException {
         this.scanner=scanner;
+        this.clientService=clientService;
     }
 
     public void ConnectionToDB() throws SQLException {
@@ -35,7 +39,6 @@ public class MainGUI {
             String choice = scanner.nextLine();
             switch(choice){
                 case "1":
-                    ClientGUI clientGUI = new ClientGUI(scanner);
                     clientGUI.displayMenuClient();
                     break;
                 case "2":

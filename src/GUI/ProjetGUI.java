@@ -23,10 +23,10 @@ public class ProjetGUI {
     private MainOeuvreService mainOeuvreService;
     private Scanner scanner;
 
-    public ProjetGUI(Scanner scanner) throws SQLException {
-        this.projetService=new ProjetServiceImp();
-        this.materielService=new MaterielServiceImp();
-        this.mainOeuvreService=new MainOeuvreServiceImp();
+    public ProjetGUI(Scanner scanner, ProjetService projetService,MaterielService materielService, MainOeuvreService mainOeuvreService) throws SQLException {
+        this.projetService=projetService;
+        this.materielService=materielService;
+        this.mainOeuvreService=mainOeuvreService;
         this.scanner=scanner;
     }
 
@@ -89,6 +89,7 @@ public class ProjetGUI {
         projetService.updateProject(projet);
         System.out.println("Project added successfully.");
     }
+
 
     //loops
     private void addMaterialsLoop(Projet projet) throws SQLException {

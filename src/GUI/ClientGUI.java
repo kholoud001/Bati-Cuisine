@@ -2,7 +2,13 @@ package GUI;
 
 import entities.Client;
 import services.implementations.ClientServiceImp;
+import services.implementations.MainOeuvreServiceImp;
+import services.implementations.MaterielServiceImp;
+import services.implementations.ProjetServiceImp;
 import services.interfaces.ClientService;
+import services.interfaces.MainOeuvreService;
+import services.interfaces.MaterielService;
+import services.interfaces.ProjetService;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -13,9 +19,14 @@ import java.util.Scanner;
 public class ClientGUI {
     private final ClientService clientService;
     private Scanner scanner;
+    ProjetService projetService= new ProjetServiceImp();
+    MaterielService materielService= new MaterielServiceImp();
+    MainOeuvreService mainOeuvreService= new MainOeuvreServiceImp();
+    ProjetGUI projetGUI= new ProjetGUI(scanner,projetService,materielService,mainOeuvreService);
 
-    public ClientGUI(Scanner scanner) throws SQLException {
-        this.clientService=new ClientServiceImp();
+
+    public ClientGUI(Scanner scanner,ClientService clientService) throws SQLException {
+        this.clientService=clientService;
         this.scanner=scanner;
     }
 
@@ -83,6 +94,7 @@ public class ClientGUI {
         return clientOptional;
     }
 
+
     public void searchClientByName() throws SQLException {
         System.out.println("--- Recherche de client existant ---");
         System.out.print("Entrez le nom du client : ");
@@ -110,7 +122,6 @@ public class ClientGUI {
                 System.out.println("keys "+keys);
                 Client selectedClient = clientHashMap.get(keys);
 
-                ProjetGUI projetGUI= new ProjetGUI(scanner);
                 projetGUI.addProjet(selectedClient);
             }else{
                 System.out.println("--- Retour au menu précedent ---");

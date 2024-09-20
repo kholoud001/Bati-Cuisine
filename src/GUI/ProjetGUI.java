@@ -50,15 +50,12 @@ public class ProjetGUI {
         projet = projetService.createProject(projet);
         System.out.println("projet => " + projet);
 
-
-        //partie ajout material
         composantGUI.addMaterialsLoop(projet);
         //ajout main oeuvre
-        //composantGUI.addLaborLoop(projet);
+        composantGUI.addLaborLoop(projet);
 
         System.out.println("Calcul du coût en cours...");
 
-        // Project TVA
         System.out.println("Souhaitez-vous appliquer une TVA au projet ? (y/n) : ");
         String response = scanner.nextLine().toLowerCase();
         double tvaProjet = 0;
@@ -87,8 +84,7 @@ public class ProjetGUI {
         double coutT= calculCout(projet);
         double coutTotalTVA= coutService.costMateriauTva(coutT,tvaProjet);
         System.out.printf("\n**Coût total des matériaux après TVA : %.2f\n\n",coutTotalTVA);
-
-
+        
         projetService.updateProject(projet);
         //System.out.println("Project added successfully.");
     }
@@ -96,14 +92,14 @@ public class ProjetGUI {
 
     public double calculCout(Projet projet) throws SQLException {
         System.out.println("\n--- Résultat du Calcul ---\n");
-        //nom projet
-        //nom client
-        //adresse chantier
-        //surface
+        System.out.printf("Nom du projet: %s \n", projet.getNomProjet());
+        System.out.printf("Client: %s \n", projet.getClient().getName());
+        System.out.printf("Adresse du chantier: %s \n", projet.getClient().getAddress());
+        System.out.printf("Surface: %.2f m² \n", projet.getSurface());
         System.out.println("\n--- Détail des Coûts ---\n");
         System.out.println("1. Matériaux :");
-        Collection<Materiel>  materiau= materielService.getAllMaterielByProjectId(projet);
 
+        Collection<Materiel>  materiau= materielService.getAllMaterielByProjectId(projet);
         double coutTotal= coutService.totalCostMateriel(materiau);
 
         for(Materiel materiel:materiau){
@@ -114,7 +110,6 @@ public class ProjetGUI {
                     materiel.getCoutUnitaire(),materiel.getCoefficientQualite(),materiel.getCoutTransport());
         }
         System.out.printf("\n**Coût total des matériaux avant TVA : %.2f\n",coutTotal);
-
         return coutTotal;
 
 

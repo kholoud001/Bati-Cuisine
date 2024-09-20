@@ -13,7 +13,7 @@ public class MainGUI {
 
 
     private Scanner scanner;
-    ClientService clientService;
+    private ClientService clientService;
     ClientGUI clientGUI = new ClientGUI(scanner,clientService);
 
 

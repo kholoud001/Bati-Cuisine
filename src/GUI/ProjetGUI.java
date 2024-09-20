@@ -18,15 +18,15 @@ import java.util.Scanner;
 
 public class ProjetGUI {
 
-    private ProjetService projetService;
-    private MaterielService materielService;
-    private MainOeuvreService mainOeuvreService;
+    private final ProjetService projetService;
     private Scanner scanner;
 
-    public ProjetGUI(Scanner scanner, ProjetService projetService,MaterielService materielService, MainOeuvreService mainOeuvreService) throws SQLException {
+    MaterielService materielService= new MaterielServiceImp();
+    MainOeuvreService mainOeuvreService= new MainOeuvreServiceImp();
+    ComposantGUI composantGUI = new ComposantGUI(scanner,mainOeuvreService,materielService);
+
+    public ProjetGUI(Scanner scanner, ProjetService projetService) throws SQLException {
         this.projetService=projetService;
-        this.materielService=materielService;
-        this.mainOeuvreService=mainOeuvreService;
         this.scanner=scanner;
     }
 
@@ -45,9 +45,9 @@ public class ProjetGUI {
 
 
         //partie ajout material
-        addMaterialsLoop(projet);
+        composantGUI.addMaterialsLoop(projet);
         //ajout main oeuvre
-        addLaborLoop(projet);
+        composantGUI.addLaborLoop(projet);
 
         System.out.println("Calcul du coût en cours...");
 
@@ -91,85 +91,7 @@ public class ProjetGUI {
     }
 
 
-    //loops
-    private void addMaterialsLoop(Projet projet) throws SQLException {
-        String choixMat;
-        do {
-            addMaterial(projet);
-            System.out.println("Voulez-vous ajouter un autre matériau ? (y/n) : ");
-            choixMat = scanner.nextLine().toLowerCase();
-        } while (choixMat.equals("y"));
-    }
 
-    private void addLaborLoop(Projet projet) throws SQLException {
-        String choixMainOeuvre;
-        do {
-            addMainOeuvre(projet);
-            System.out.println("Voulez-vous ajouter un autre type de main-d'œuvre ? (y/n) : ");
-            choixMainOeuvre = scanner.nextLine().toLowerCase();
-        } while (choixMainOeuvre.equals("y"));
-    }
-
-    //add material
-    public void addMaterial(Projet projet) throws SQLException {
-        System.out.println("\n--- Ajout des matériaux ---\n");
-        System.out.print("Entrez le nom du matériau :");
-        String nomMat = scanner.nextLine();
-
-        System.out.print("Entrez la quantité de ce matériau (en m²) : ");
-        double quantite = scanner.nextDouble();
-        scanner.nextLine();
-
-        System.out.print("Entrez le coût unitaire de ce matériau (€/m²) :");
-        double cout_unitaire = scanner.nextDouble();
-        scanner.nextLine();
-
-        System.out.print("Entrez le coût de transport de ce matériau (€) :");
-        double cout_tranport = scanner.nextDouble();
-        scanner.nextLine();
-
-        System.out.print("Entrez le coefficient de qualité du matériau (1.0 = standard, > 1.0 = haute qualité) : ");
-        double coef=scanner.nextDouble();
-        scanner.nextLine();
-
-        System.out.print("Entrez le taux TVA du matériel: ");
-        double tva=scanner.nextDouble();
-        scanner.nextLine();
-
-        Materiel materiel= new Materiel(nomMat,tva,"Materiel",projet,cout_unitaire,cout_tranport,coef,quantite);
-        materielService.addMateriel(materiel);
-        System.out.println("\nMatériau ajouté avec succès !\n");
-    }
-
-
-    // add main oeuvre
-    public void addMainOeuvre(Projet projet) throws SQLException {
-        System.out.println("\n--- Ajout de la main-d'œuvre ---\n");
-        System.out.print("Entrez le type de main-d'œuvre (e.g., Ouvrier de base, Spécialiste) : ");
-        String type = scanner.nextLine();
-
-        System.out.print("Entrez le taux horaire de cette main-d'œuvre (€/h) : ");
-        double taux = scanner.nextDouble();
-        scanner.nextLine();
-
-        System.out.print("Entrez le nombre d'heures travaillées : ");
-        double heure = scanner.nextDouble();
-        scanner.nextLine();
-
-        System.out.print("Entrez le facteur de productivité (1.0 = standard, > 1.0 = haute productivité) : ");
-        double facteur = scanner.nextDouble();
-        scanner.nextLine();
-
-        System.out.print("Entrez le taux TVA du main d'oeuvre: ");
-        double tva=scanner.nextDouble();
-        scanner.nextLine();
-
-        MainOeuvre mainOeuvre = new MainOeuvre(type,tva,"Main-d'oeuvre",projet,taux,heure,facteur);
-        mainOeuvreService.createMainOeuvre(mainOeuvre);
-        System.out.println("\nMain-d'œuvre ajoutée avec succès !\n");
-
-
-    }
 
 
 }

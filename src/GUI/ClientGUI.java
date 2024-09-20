@@ -20,9 +20,8 @@ public class ClientGUI {
     private final ClientService clientService;
     private Scanner scanner;
     ProjetService projetService= new ProjetServiceImp();
-    MaterielService materielService= new MaterielServiceImp();
-    MainOeuvreService mainOeuvreService= new MainOeuvreServiceImp();
-    ProjetGUI projetGUI= new ProjetGUI(scanner,projetService,materielService,mainOeuvreService);
+
+    ProjetGUI projetGUI= new ProjetGUI(scanner,projetService);
 
 
     public ClientGUI(Scanner scanner,ClientService clientService) throws SQLException {
@@ -79,6 +78,7 @@ public class ClientGUI {
         clientService.createClient(client);
         System.out.println("Client added successfully.");
     }
+
 
     public Optional<Client> viewClient(int clientId) throws SQLException {
         Optional<Client> clientOptional = clientService.getClientById(clientId);

@@ -16,6 +16,7 @@ public class Main {
         MainGUI mainGUI = new MainGUI(sc,clientService);
         //mainGUI.ConnectionToDB();
         mainGUI.displayMenu();
+        sc.close();
 
 
 

@@ -16,8 +16,8 @@ public class MaterielDAOImp implements MaterielDAO {
 
     private Connection connection;
 
-    public MaterielDAOImp() throws SQLException {
-        this.connection= DatabaseConnection.getInstance().getConnection();
+    public MaterielDAOImp(Connection connection) throws SQLException {
+        this.connection= connection;
     }
 
     public Collection<Materiel> getMatrielByProjectId(Projet projet) throws SQLException {

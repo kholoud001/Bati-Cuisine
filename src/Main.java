@@ -1,27 +1,14 @@
-import DAO.implementations.ClientDAOImp;
-import DAO.implementations.MainOeuvreDAOImp;
-import DAO.implementations.MaterielDAOImp;
-import DAO.implementations.ProjetDAOImp;
-import DAO.interfaces.ClientDAO;
-import DAO.interfaces.MainOeuvreDAO;
-import DAO.interfaces.MaterielDAO;
-import DAO.interfaces.ProjetDAO;
-import GUI.ClientGUI;
-import GUI.ComposantGUI;
-import GUI.MainGUI;
-import GUI.ProjetGUI;
+import DAO.implementations.*;
+import DAO.interfaces.*;
+import GUI.*;
 import config.DatabaseConnection;
-import repositories.implementations.ClientRepImp;
-import repositories.implementations.MainOeuvreRepImp;
-import repositories.implementations.MaterielRepImp;
-import repositories.implementations.ProjetRepImp;
-import repositories.interfaces.ClientRep;
-import repositories.interfaces.MainOeuvreRep;
-import repositories.interfaces.MaterielRep;
-import repositories.interfaces.ProjetRep;
+import repositories.implementations.*;
+import repositories.interfaces.*;
 import services.implementations.*;
 import services.interfaces.*;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -30,21 +17,30 @@ public class Main {
     public static void main(String[] args) throws SQLException {
         Scanner sc = new Scanner(System.in);
 
-        MaterielDAO materielDAO= new MaterielDAOImp();
+        Connection connection = DatabaseConnection.getInstance().getConnection();
+
+
+        MaterielDAO materielDAO= new MaterielDAOImp(connection);
         MaterielRep materielRep = new MaterielRepImp(materielDAO);
         MaterielService materielService= new MaterielServiceImp(materielRep);
-        MainOeuvreDAO mainOeuvreDAO= new MainOeuvreDAOImp();
+        MainOeuvreDAO mainOeuvreDAO= new MainOeuvreDAOImp(connection);
         MainOeuvreRep mainOeuvreRep = new MainOeuvreRepImp(mainOeuvreDAO);
         MainOeuvreService mainOeuvreService= new MainOeuvreServiceImp(mainOeuvreRep);
         ComposantGUI composantGUI = new ComposantGUI(sc,mainOeuvreService,materielService);
         CoutService coutService=new CoutServiceImp();
 
-        ProjetDAO projetDAO=new ProjetDAOImp();
+        DevisDAO devisDAO =new DevisDAOImp(connection);
+        DevisRep devisRep = new DevisRepImp(devisDAO);
+        DevisService devisService= new DevisServiceImp(devisRep);
+        DevisGUI devisGUI= new DevisGUI(devisService,sc);
+
+
+        ProjetDAO projetDAO=new ProjetDAOImp(connection);
         ProjetRep projetRep = new ProjetRepImp(projetDAO);
         ProjetService projetService= new ProjetServiceImp(projetRep);
-        ProjetGUI projetGUI= new ProjetGUI(sc,projetService,composantGUI,materielService,mainOeuvreService,coutService);
+        ProjetGUI projetGUI= new ProjetGUI(sc,projetService,composantGUI,devisGUI,materielService,mainOeuvreService,coutService);
 
-        ClientDAO clientDAO = new ClientDAOImp();
+        ClientDAO clientDAO = new ClientDAOImp(connection);
         ClientRep clientRep = new ClientRepImp(clientDAO);
         ClientService clientService = new ClientServiceImp(clientRep);
         ClientGUI clientGUI= new ClientGUI(sc,clientService,projetGUI);

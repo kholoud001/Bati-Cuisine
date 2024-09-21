@@ -23,13 +23,15 @@ public class ProjetGUI {
     private MainOeuvreService mainOeuvreService;
     private ComposantGUI composantGUI ;
     private  CoutService coutService;
+    private DevisGUI devisGUI;
     private Scanner scanner;
 
 
-    public ProjetGUI(Scanner scanner, ProjetService projetService,ComposantGUI composantGUI,
+    public ProjetGUI(Scanner scanner, ProjetService projetService,ComposantGUI composantGUI, DevisGUI devisGUI,
                      MaterielService materielService, MainOeuvreService mainOeuvreService,CoutService coutService) throws SQLException {
         this.projetService=projetService;
         this.composantGUI= composantGUI;
+        this.devisGUI=devisGUI;
         this.materielService=materielService;
         this.mainOeuvreService=mainOeuvreService;
         this.coutService=coutService;
@@ -50,7 +52,6 @@ public class ProjetGUI {
 
         Projet projet = new Projet(nomProjet, surface, 0, 0, 0, EtatProjet.EN_COURS, client);
         projet = projetService.createProject(projet);
-        System.out.println("projet => " + projet);
 
         composantGUI.addMaterialsLoop(projet);
         //ajout main oeuvre
@@ -93,6 +94,7 @@ public class ProjetGUI {
         calculCout(projet, tvaProjet, margeBeneficiaire);
 
         projetService.updateProject(projet);
+        devisGUI.createDevis(projet);
         //System.out.println("Project added successfully.");
     }
 
@@ -159,12 +161,11 @@ public class ProjetGUI {
             System.out.printf("**Coût total final du projet: %.2f €**\n", coutTotal);
         }else{
             System.out.printf("**Coût total final du projet: %.2f €**\n", coutTotal);
-
         }
-
 
         projet.setCoutTotal(coutTotal);
     }
+
 
 
 

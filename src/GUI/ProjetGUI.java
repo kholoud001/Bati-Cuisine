@@ -140,7 +140,7 @@ public class ProjetGUI {
             double coutMainOeuvreTVA = coutMainOeuvre * (1 + tvaProjet / 100);
             System.out.printf("**Coût total de la main-d'œuvre avec TVA (%.2f%%) : %.2f €**\n", tvaProjet, coutMainOeuvreTVA);
         } else {
-            System.out.printf("**Coût total de la main-d'œuvre avec TVA (0.00%%) : %.2f €**\n", coutMainOeuvre);
+            System.out.printf("**Coût total de la main-d'œuvre avec TVA (0.00%%) : %.2f €**\n\n", coutMainOeuvre);
         }
 
         // Calcul final avec marge bénéficiaire
@@ -149,12 +149,19 @@ public class ProjetGUI {
             coutTotal += (coutTotal * tvaProjet / 100); // Ajout de la TVA
         }
 
-        if (margeBeneficiaire > 0) {
-            coutTotal *= (1 + margeBeneficiaire / 100); // Ajout de la marge bénéficiaire
-            System.out.printf("**Coût total avec TVA et marge bénéficiaire (%.2f%%) : %.2f €**\n", margeBeneficiaire, coutTotal);
-        } else {
-            System.out.printf("**Coût total sans marge bénéficiaire : %.2f €**\n", coutTotal);
+        System.out.printf("3. Coût total avant marge : %.2f €\n", coutTotal);
+        double coutMarge =  coutTotal *(margeBeneficiaire/100);
+        System.out.printf("4. Marge bénéficiaire (%.2f): %.2f €\n", margeBeneficiaire,coutMarge);
+
+
+        if(margeBeneficiaire>0) {
+            coutTotal *= (1 + margeBeneficiaire / 100);
+            System.out.printf("**Coût total final du projet: %.2f €**\n", coutTotal);
+        }else{
+            System.out.printf("**Coût total final du projet: %.2f €**\n", coutTotal);
+
         }
+
 
         projet.setCoutTotal(coutTotal);
     }

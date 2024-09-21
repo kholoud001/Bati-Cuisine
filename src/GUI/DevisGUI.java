@@ -24,12 +24,31 @@ public class DevisGUI {
     public  void createDevis(Projet projet){
         System.out.println("--- Enregistrement du Devis ---\n");
 
-        double montantEstime= projet.getCoutTotal();
-        System.out.println("Entrez la date d'émission du devis (format : jj/mm/aaaa) : ");
-        LocalDate date_emission = LocalDate.parse(scanner.next(), formatter);
+        double montantEstime = projet.getCoutTotal();
+        LocalDate date_validite;
+        LocalDate date_emission;
 
-        System.out.println("Entrez la date de validité du devis (format : jj/mm/aaaa) : ");
-        LocalDate date_validite = LocalDate.parse(scanner.next(), formatter);
+
+        while (true) {
+            System.out.println("Entrez la date d'émission du devis (format : jj/mm/aaaa) : ");
+            date_emission = LocalDate.parse(scanner.next(), formatter);
+            if (!date_emission.isBefore(LocalDate.now())) {
+                break;
+            } else {
+                System.out.println("La date d'émission doit être à partir d'aujourd'hui ou ultérieure. Veuillez réessayer.");
+            }
+        }
+
+        while (true) {
+            System.out.println("Entrez la date de validité du devis (format : jj/mm/aaaa) : ");
+            date_validite = LocalDate.parse(scanner.next(), formatter);
+            if (!date_validite.isBefore(LocalDate.now())) {
+                break;
+            } else {
+                System.out.println("La date de validité doit être à partir d'aujourd'hui ou ultérieure. Veuillez réessayer.");
+            }
+        }
+
         scanner.nextLine();
 
         System.out.print("Souhaitez-vous enregistrer le devis ? (y/n) : ");

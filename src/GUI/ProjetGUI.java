@@ -52,7 +52,6 @@ public class ProjetGUI {
 
         Projet projet = new Projet(nomProjet, surface, 0, 0, 0, EtatProjet.EN_COURS, client);
         projet = projetService.createProject(projet);
-        System.out.println("projet => " + projet);
 
         composantGUI.addMaterialsLoop(projet);
         //ajout main oeuvre
@@ -79,7 +78,7 @@ public class ProjetGUI {
                 }
             }
         }
-        //System.out.printf("tva test ==========> %.2f\n", tvaProjet);
+        System.out.printf("tva test ==========> %.2f\n", tvaProjet);
         // Marge
         System.out.println("Souhaitez-vous appliquer une marge bénéficiaire au projet ? (y/n) : ");
         String answer= scanner.nextLine().toLowerCase();

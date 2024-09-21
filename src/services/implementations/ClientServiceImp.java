@@ -13,8 +13,8 @@ public class ClientServiceImp implements ClientService {
 
     private final ClientRep clientRep;
 
-    public ClientServiceImp() throws SQLException {
-        this.clientRep = new ClientRepImp();
+    public ClientServiceImp(ClientRep clientRep) throws SQLException {
+        this.clientRep = clientRep;
     }
 
     public void createClient(Client client) throws SQLException {

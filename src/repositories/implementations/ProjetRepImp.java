@@ -11,8 +11,8 @@ public class ProjetRepImp implements ProjetRep {
 
     private ProjetDAO projetDAO;
 
-    public ProjetRepImp() throws SQLException {
-        this.projetDAO = new ProjetDAOImp();
+    public ProjetRepImp(ProjetDAO projetDAO) throws SQLException {
+        this.projetDAO = projetDAO;
     }
 
     public Projet save(Projet projet) throws SQLException {

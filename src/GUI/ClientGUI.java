@@ -1,32 +1,25 @@
 package GUI;
 
+
 import entities.Client;
-import services.implementations.ClientServiceImp;
-import services.implementations.MainOeuvreServiceImp;
-import services.implementations.MaterielServiceImp;
-import services.implementations.ProjetServiceImp;
+
 import services.interfaces.ClientService;
-import services.interfaces.MainOeuvreService;
-import services.interfaces.MaterielService;
-import services.interfaces.ProjetService;
 
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.Scanner;
 
 public class ClientGUI {
     private final ClientService clientService;
     private Scanner scanner;
-    ProjetService projetService= new ProjetServiceImp();
-
-    ProjetGUI projetGUI= new ProjetGUI(scanner,projetService);
+    ProjetGUI projetGUI;
 
 
-    public ClientGUI(Scanner scanner,ClientService clientService) throws SQLException {
+    public ClientGUI(Scanner scanner,ClientService clientService ,ProjetGUI projetGUI) throws SQLException {
         this.clientService=clientService;
         this.scanner=scanner;
+        this.projetGUI= projetGUI;
     }
 
     public void displayMenuClient() throws SQLException {

@@ -14,8 +14,8 @@ public class ProjetDAOImp implements ProjetDAO {
 
     private final Connection connection;
 
-    public ProjetDAOImp() throws SQLException {
-        this.connection= DatabaseConnection.getInstance().getConnection();
+    public ProjetDAOImp(Connection connection) throws SQLException {
+        this.connection= connection;
     }
 
     public Projet add(Projet projet) throws SQLException {

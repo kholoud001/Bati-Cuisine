@@ -16,8 +16,9 @@ public class MainOeuvreDAOImp implements MainOeuvreDAO {
 
     private Connection connection;
 
-    public MainOeuvreDAOImp() throws SQLException {
-        this.connection= DatabaseConnection.getInstance().getConnection();
+    public MainOeuvreDAOImp(Connection connection) throws SQLException {
+        this.connection= connection;
+
     }
 
     public void add(MainOeuvre mainOeuvre) throws SQLException {

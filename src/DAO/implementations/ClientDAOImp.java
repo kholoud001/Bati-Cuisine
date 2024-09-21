@@ -18,8 +18,8 @@ public class ClientDAOImp implements ClientDAO {
 
     private final Connection connection;
 
-    public ClientDAOImp() throws SQLException {
-        this.connection= DatabaseConnection.getInstance().getConnection();
+    public ClientDAOImp(Connection connection) throws SQLException {
+        this.connection= connection;
     }
 
     public void add(Client client) throws SQLException {

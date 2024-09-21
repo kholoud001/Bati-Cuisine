@@ -13,8 +13,8 @@ public class MaterielRepImp implements MaterielRep {
 
     private MaterielDAO materielDAO;
 
-    public MaterielRepImp() throws SQLException {
-        this.materielDAO = new MaterielDAOImp();
+    public MaterielRepImp(MaterielDAO materielDAO) throws SQLException {
+        this.materielDAO = materielDAO;
     }
 
     public void save(Materiel materiel) throws SQLException {

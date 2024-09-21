@@ -11,8 +11,8 @@ public class ProjetServiceImp implements ProjetService {
 
     private ProjetRep projetRep;
 
-    public ProjetServiceImp() throws SQLException {
-        this.projetRep=new ProjetRepImp();
+    public ProjetServiceImp(ProjetRep projetRep) throws SQLException {
+        this.projetRep=projetRep;
     }
 
     public Projet createProject(Projet projet) throws SQLException {

@@ -13,8 +13,8 @@ public class MaterielServiceImp implements MaterielService {
 
     private MaterielRep materielRep;
 
-    public MaterielServiceImp() throws SQLException {
-        this.materielRep= new MaterielRepImp();
+    public MaterielServiceImp( MaterielRep materielRep) throws SQLException {
+        this.materielRep= materielRep;
     }
 
     public void addMateriel(Materiel materiel) throws SQLException {

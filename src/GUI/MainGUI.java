@@ -1,26 +1,22 @@
 package GUI;
 
 import config.DatabaseConnection;
-import entities.Client;
-import services.implementations.ClientServiceImp;
+
 import services.interfaces.ClientService;
 
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class MainGUI {
 
 
     private Scanner scanner;
-    private ClientService clientService;
     ClientGUI clientGUI;
 
 
-    public MainGUI(Scanner scanner, ClientService clientService) throws SQLException {
+    public MainGUI(Scanner scanner, ClientGUI clientGUI) throws SQLException {
         this.scanner=scanner;
-        this.clientService=clientService;
-        this.clientGUI = new ClientGUI(scanner, clientService);
+        this.clientGUI = clientGUI;
 
     }
 

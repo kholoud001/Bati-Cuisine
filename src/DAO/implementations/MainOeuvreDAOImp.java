@@ -3,10 +3,14 @@ package DAO.implementations;
 import DAO.interfaces.MainOeuvreDAO;
 import config.DatabaseConnection;
 import entities.MainOeuvre;
+import entities.Projet;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class MainOeuvreDAOImp implements MainOeuvreDAO {
 
@@ -33,6 +37,33 @@ public class MainOeuvreDAOImp implements MainOeuvreDAO {
         }catch(SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public Collection<MainOeuvre> getMainOeuvreByProjectId(Projet projet) throws SQLException {
+           String query="SELECT * FROM main_oeuvres WHERE projet_id=?";
+           Collection<MainOeuvre> mains =new ArrayList<MainOeuvre>();
+
+        try(PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, projet.getId());
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                Projet projetFromDb= new Projet(rs.getInt("projet_id"));
+
+                MainOeuvre main= new MainOeuvre(
+                        rs.getString("nom"),
+                        rs.getDouble("tauxTVA"),
+                        rs.getString("typeComposant"),
+                        projetFromDb,
+                        rs.getDouble("taux_horaire"),
+                        rs.getDouble("heures_travail"),
+                        rs.getDouble("productivite_ouvrier")
+                );
+                mains.add(main);
+            }
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+       return mains;
     }
 
 

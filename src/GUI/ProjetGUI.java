@@ -5,10 +5,8 @@ import entities.MainOeuvre;
 import entities.Materiel;
 import entities.Projet;
 import enums.EtatProjet;
+
 import services.implementations.CoutServiceImp;
-import services.implementations.MainOeuvreServiceImp;
-import services.implementations.MaterielServiceImp;
-import services.implementations.ProjetServiceImp;
 import services.interfaces.CoutService;
 import services.interfaces.MainOeuvreService;
 import services.interfaces.MaterielService;
@@ -16,23 +14,27 @@ import services.interfaces.ProjetService;
 
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class ProjetGUI {
 
     private final ProjetService projetService;
+    private MaterielService materielService;
+    private MainOeuvreService mainOeuvreService;
+    private ComposantGUI composantGUI ;
+    private  CoutService coutService;
     private Scanner scanner;
 
-    MaterielService materielService= new MaterielServiceImp();
-    MainOeuvreService mainOeuvreService= new MainOeuvreServiceImp();
-    ComposantGUI composantGUI ;
-    CoutService coutService= new CoutServiceImp();
 
-    public ProjetGUI(Scanner scanner, ProjetService projetService) throws SQLException {
+    public ProjetGUI(Scanner scanner, ProjetService projetService,ComposantGUI composantGUI,
+                     MaterielService materielService, MainOeuvreService mainOeuvreService,CoutService coutService) throws SQLException {
         this.projetService=projetService;
+        this.composantGUI= composantGUI;
+        this.materielService=materielService;
+        this.mainOeuvreService=mainOeuvreService;
+        this.coutService=coutService;
         this.scanner=scanner;
-        this.composantGUI= new ComposantGUI(scanner,mainOeuvreService,materielService);
+
     }
 
 
@@ -56,18 +58,26 @@ public class ProjetGUI {
 
         System.out.println("Calcul du coût en cours...");
 
+        //tva
         System.out.println("Souhaitez-vous appliquer une TVA au projet ? (y/n) : ");
         String response = scanner.nextLine().toLowerCase();
         double tvaProjet = 0;
-
         if (response.equals("y")) {
-            System.out.println("Entrez le pourcentage de TVA (%) :  ");
-            tvaProjet = scanner.nextDouble();
-            scanner.nextLine();
-        }else{
-            tvaProjet = 0;
-        }
+            System.out.print("Entrez le pourcentage de TVA (%) :  ");
 
+            // Read the TVA percentage
+            while (true) {
+                if (scanner.hasNextDouble()) {
+                    tvaProjet = scanner.nextDouble();
+                    scanner.nextLine(); // Clear the newline
+                    break; // Exit the loop when valid input is received
+                } else {
+                    System.out.println("Veuillez entrer un pourcentage valide.");
+                    scanner.nextLine(); // Clear invalid input
+                }
+            }
+        }
+        System.out.printf("tva test ==========> %.2f\n", tvaProjet);
         // Marge
         System.out.println("Souhaitez-vous appliquer une marge bénéficiaire au projet ? (y/n) : ");
         String answer= scanner.nextLine().toLowerCase();
@@ -77,43 +87,76 @@ public class ProjetGUI {
             margeBeneficiaire = scanner.nextDouble();
             scanner.nextLine();
         }
-
         System.out.println("Calcul du coût en cours...");
 
         //cout totale
-        double coutT= calculCout(projet);
-        double coutTotalTVA= coutService.costMateriauTva(coutT,tvaProjet);
-        System.out.printf("\n**Coût total des matériaux après TVA : %.2f\n\n",coutTotalTVA);
-        
+        calculCout(projet, tvaProjet, margeBeneficiaire);
+
         projetService.updateProject(projet);
         //System.out.println("Project added successfully.");
     }
 
 
-    public double calculCout(Projet projet) throws SQLException {
+    public void calculCout(Projet projet, double tvaProjet, double margeBeneficiaire) throws SQLException {
         System.out.println("\n--- Résultat du Calcul ---\n");
-        System.out.printf("Nom du projet: %s \n", projet.getNomProjet());
-        System.out.printf("Client: %s \n", projet.getClient().getName());
-        System.out.printf("Adresse du chantier: %s \n", projet.getClient().getAddress());
-        System.out.printf("Surface: %.2f m² \n", projet.getSurface());
-        System.out.println("\n--- Détail des Coûts ---\n");
-        System.out.println("1. Matériaux :");
+        System.out.printf("Nom du projet : %s \n", projet.getNomProjet());
+        System.out.printf("Client : %s \n", projet.getClient().getName());
+        System.out.printf("Adresse du chantier : %s \n", projet.getClient().getAddress());
+        System.out.printf("Surface : %.2f m² \n", projet.getSurface());
 
-        Collection<Materiel>  materiau= materielService.getAllMaterielByProjectId(projet);
-        double coutTotal= coutService.totalCostMateriel(materiau);
-
-        for(Materiel materiel:materiau){
+        // Calcul des coûts des matériaux
+        System.out.println("\n--- Détail des Coûts ---\n1. Matériaux :");
+        Collection<Materiel> materiaux = materielService.getAllMaterielByProjectId(projet);
+        double coutMateriaux = coutService.totalCostMateriel(materiaux);
+        for (Materiel materiel : materiaux) {
             double cout = coutService.coutMateriel(materiel);
-            System.out.printf("- %s : %.2f  € (quantité: %.2f m², " +
-                    "coût unitaire: %.2f €/m²,qualité: %.2f ,transport: %.2f €) \n",
-                    materiel.getNom(),cout,materiel.getQuantite(),
-                    materiel.getCoutUnitaire(),materiel.getCoefficientQualite(),materiel.getCoutTransport());
+            System.out.printf("- %s : %.2f € (quantité : %.2f, coût unitaire : %.2f €/unité, qualité : %.2f, transport : %.2f €)\n",
+                    materiel.getNom(), cout, materiel.getQuantite(), materiel.getCoutUnitaire(),
+                    materiel.getCoefficientQualite(), materiel.getCoutTransport());
         }
-        System.out.printf("\n**Coût total des matériaux avant TVA : %.2f\n",coutTotal);
-        return coutTotal;
+        System.out.printf("**Coût total des matériaux avant TVA : %.2f €**\n", coutMateriaux);
 
+        // Application de la TVA aux matériaux
+        if (tvaProjet > 0) {
+            double coutMateriauxTVA = coutMateriaux * (1 + tvaProjet / 100);
+            System.out.printf("**Coût total des matériaux avec TVA (%.2f%%) : %.2f €**\n", tvaProjet, coutMateriauxTVA);
+        } else {
+            System.out.printf("**Coût total des matériaux avec TVA (0.00%%) : %.2f €**\n", coutMateriaux);
+        }
 
+        // Calcul des coûts de la main-d'œuvre
+        System.out.println("\n2. Main-d'œuvre :");
+        Collection<MainOeuvre> mainOeuvres = mainOeuvreService.getAllMainOeuvre(projet);
+        double coutMainOeuvre = coutService.totalCostMainOeuvre(mainOeuvres);
+        for (MainOeuvre mo : mainOeuvres) {
+            double cout = coutService.coutMainOeuvre(mo);
+            System.out.printf("- %s : %.2f € (taux horaire : %.2f €/h, heures travaillées : %.2f h, productivité : %.2f)\n",
+                    mo.getNom(), cout, mo.getTauxHoraire(), mo.getHeuresTravail(), mo.getProductiviteOuvrier());
+        }
+        System.out.printf("**Coût total de la main-d'œuvre avant TVA : %.2f €**\n", coutMainOeuvre);
 
+        // Application de la TVA à la main-d'œuvre
+        if (tvaProjet > 0) {
+            double coutMainOeuvreTVA = coutMainOeuvre * (1 + tvaProjet / 100);
+            System.out.printf("**Coût total de la main-d'œuvre avec TVA (%.2f%%) : %.2f €**\n", tvaProjet, coutMainOeuvreTVA);
+        } else {
+            System.out.printf("**Coût total de la main-d'œuvre avec TVA (0.00%%) : %.2f €**\n", coutMainOeuvre);
+        }
+
+        // Calcul final avec marge bénéficiaire
+        double coutTotal = coutMateriaux + coutMainOeuvre; // Total avant TVA
+        if (tvaProjet > 0) {
+            coutTotal += (coutTotal * tvaProjet / 100); // Ajout de la TVA
+        }
+
+        if (margeBeneficiaire > 0) {
+            coutTotal *= (1 + margeBeneficiaire / 100); // Ajout de la marge bénéficiaire
+            System.out.printf("**Coût total avec TVA et marge bénéficiaire (%.2f%%) : %.2f €**\n", margeBeneficiaire, coutTotal);
+        } else {
+            System.out.printf("**Coût total sans marge bénéficiaire : %.2f €**\n", coutTotal);
+        }
+
+        projet.setCoutTotal(coutTotal);
     }
 
 

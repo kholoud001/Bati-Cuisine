@@ -70,11 +70,11 @@ public class ProjetGUI {
             while (true) {
                 if (scanner.hasNextDouble()) {
                     tvaProjet = scanner.nextDouble();
-                    scanner.nextLine(); // Clear the newline
-                    break; // Exit the loop when valid input is received
+                    scanner.nextLine();
+                    break;
                 } else {
                     System.out.println("Veuillez entrer un pourcentage valide.");
-                    scanner.nextLine(); // Clear invalid input
+                    scanner.nextLine();
                 }
             }
         }
@@ -83,11 +83,21 @@ public class ProjetGUI {
         System.out.println("Souhaitez-vous appliquer une marge bénéficiaire au projet ? (y/n) : ");
         String answer= scanner.nextLine().toLowerCase();
         double margeBeneficiaire=0;
-        if(answer.equals("y")) {
-            System.out.print("Entrez le pourcentage de marge bénéficiaire (%) : ");
-            margeBeneficiaire = scanner.nextDouble();
-            scanner.nextLine();
+        if (answer.equals("y")) {
+            System.out.print("Entrez le pourcentage de la marge bénéficaire (%) :  ");
+            while (true) {
+                if (scanner.hasNextDouble()) {
+                    margeBeneficiaire = scanner.nextDouble();
+                    scanner.nextLine();
+                    break;
+                } else {
+                    System.out.println("Veuillez entrer un pourcentage valide.");
+                    scanner.nextLine();
+                }
+            }
         }
+        System.out.printf("margeBeneficiaire test ==========> %.2f\n", margeBeneficiaire);
+
         System.out.println("Calcul du coût en cours...");
 
         //cout totale

@@ -114,6 +114,25 @@ public class ProjetDAOImp implements ProjetDAO {
         return projets;
     }
 
+    public void delete(int id) throws SQLException {
+        String query = "DELETE FROM projets WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id);
+
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Le projet avec l'ID " + id + " a été supprimé avec succès.");
+            } else {
+                System.out.println("Aucun projet trouvé avec l'ID " + id + ".");
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Erreur lors de la suppression du projet: " + e.getMessage(), e);
+        }
+    }
+
+
     public Projet getProjetById(int id) throws SQLException {
         Projet projet = null;
         String query = "SELECT * FROM projets WHERE id = ?";

@@ -14,7 +14,9 @@ import services.interfaces.ProjetService;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class ProjetGUI {
 
@@ -214,6 +216,39 @@ public class ProjetGUI {
         // Calculate total cost
         double coutTotal = coutMateriaux + coutMainOeuvre;
         System.out.printf("**Coût total du projet : %.2f €**\n", coutTotal);
+    }
+
+    public HashMap<Integer,Projet> DisplayallProjects() throws SQLException {
+        HashMap<Integer,Projet> projets =projetService.getAllProjets();
+        if(projets.isEmpty()){
+            System.out.println("Aucun projets n'est trouvé");
+        }else{
+            projets.values().stream().forEach(projet -> {
+                System.out.println(" Nom du Projet: " + projet.getNomProjet());
+            });
+        }
+        return projets;
+    }
+
+    public HashMap<Integer,Projet> SearchProject() throws SQLException {
+        HashMap<Integer,Projet> projets =projetService.getAllProjets();
+
+        System.out.println("Entrer le nom du projet que vous souhaitez chercher: ");
+        String nomProjet=scanner.nextLine();
+
+        HashMap<Integer, Projet> filteredProjets = (HashMap<Integer, Projet>) projets.values().stream()
+                .filter(projet -> projet.getNomProjet().toLowerCase().contains(nomProjet.toLowerCase()))
+                .collect(Collectors.toMap(Projet::getId, projet -> projet));
+
+        if(filteredProjets.isEmpty()){
+            System.out.println("Aucun projet trouvé avec le nom: " + nomProjet);
+        }else{
+            filteredProjets.values().forEach(projet ->
+                    System.out.println( "Nom du projet: " + projet.getNomProjet() +", Surface du projet: "+projet.getSurface() +
+                            ", Etat du projet: "+ projet.getEtatProjet() +"\n")
+            );
+        }
+        return filteredProjets;
     }
 
 

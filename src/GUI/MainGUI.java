@@ -28,7 +28,8 @@ public class MainGUI {
             System.out.println("1. Créer un nouveau projet");
             System.out.println("2. Afficher les projets existants");
             System.out.println("3. Calculer le coût d'un projet");
-            System.out.println("4. Quitter");
+            System.out.println("4. Chercher un projet");
+            System.out.println("0. Quitter");
             System.out.print("Choisissez une option : ");
 
             String choice = scanner.nextLine();
@@ -37,11 +38,15 @@ public class MainGUI {
                     clientGUI.displayMenuClient();
                     break;
                 case "2":
+                    projetGUI.DisplayallProjects();
                     break;
                 case "3":
                     projetGUI.coutProjet();
                     break;
                 case "4":
+                    projetGUI.SearchProject();
+                    break;
+                case "0":
                     exit =true;
                     break;
                 default:

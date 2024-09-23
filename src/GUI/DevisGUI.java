@@ -84,7 +84,7 @@ public class DevisGUI {
                     System.out.printf("Date de validité : %s\n", devis.getDateValidite());
                     System.out.printf("Devis accepté : %s\n", devis.isAccepte() ? "Oui" : "Non");
 
-                    // Demander à l'utilisateur d'accepter ou de refuser
+
                     System.out.println("Souhaitez-vous accepter le devis ? (oui/non)");
                     String acceptation = scanner.nextLine();
 

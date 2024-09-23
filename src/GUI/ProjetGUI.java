@@ -86,7 +86,7 @@ public class ProjetGUI {
                 }
             }
         }
-        System.out.printf("tva test ==========> %.2f\n", tvaProjet);
+       // System.out.printf("tva test ==========> %.2f\n", tvaProjet);
         // Marge
         System.out.println("Souhaitez-vous appliquer une marge bénéficiaire au projet ? (y/n) : ");
         String answer= scanner.nextLine().toLowerCase();
@@ -104,7 +104,7 @@ public class ProjetGUI {
                 }
             }
         }
-        System.out.printf("margeBeneficiaire test ==========> %.2f\n", margeBeneficiaire);
+        //System.out.printf("margeBeneficiaire test ==========> %.2f\n", margeBeneficiaire);
         System.out.println("Calcul du coût en cours...");
 
         //cout totale
@@ -166,6 +166,25 @@ public class ProjetGUI {
         if (margeBeneficiaire > 0) {
             coutTotalAvecTVAProjet += coutMarge;
         }
+
+        // Option pour modifier la marge bénéficiaire
+
+            System.out.println("\nSouhaitez-vous modifier la marge bénéficiaire du projet? (oui/non)");
+            String confirmation = scanner.nextLine().toLowerCase();
+
+            if (confirmation.equalsIgnoreCase("oui")) {
+                System.out.println("Veuillez entrer le nouveau pourcentage de marge bénéficiaire :");
+                margeBeneficiaire = Double.parseDouble(scanner.nextLine());
+                scanner.nextLine();
+
+                // Recalcul de la marge et du coût total
+                coutMarge = coutTotalAvecTVAProjet * (margeBeneficiaire / 100);
+                coutTotalAvecTVAProjet = coutTotalSansTVAProjet + coutTVAProjet + coutMarge;
+
+                System.out.printf("Nouvelle marge bénéficiaire (%.2f%%) : %.2f €\n", margeBeneficiaire, coutMarge);
+                System.out.printf("**Nouveau coût total final du projet avec TVA et marge : %.2f €**\n", coutTotalAvecTVAProjet);
+            }
+
 
         System.out.printf("**Coût total final du projet avec TVA et marge : %.2f €**\n", coutTotalAvecTVAProjet);
 

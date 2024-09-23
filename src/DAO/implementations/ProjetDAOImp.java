@@ -21,6 +21,15 @@ public class ProjetDAOImp implements ProjetDAO {
         this.connection= connection;
     }
 
+    /**
+     * Ajoute un nouveau projet à la base de données.
+     *
+     * @param projet l'objet Projet à ajouter à la base de données.
+     * @return un objet `Projet` contenant les informations du projet ajouté,
+     *         y compris son ID généré, ou `null` si l'insertion échoue.
+     * @throws SQLException si une erreur se produit lors de l'accès à la
+     *                      base de données ou lors de l'exécution de la requête.
+     */
     public Projet add(Projet projet) throws SQLException {
         String query = "INSERT INTO projets (nomprojet, surface, tvaProjet, margebeneficiaire, couttotal, etatprojet, client_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?::etat_projet_enum, ?) RETURNING *";
@@ -57,6 +66,14 @@ public class ProjetDAOImp implements ProjetDAO {
         return null;
     }
 
+
+    /**
+     * Met à jour les informations d'un projet dans la base de données.
+     *
+     * @param projet l'objet Projet contenant les nouvelles informations à
+     * @throws SQLException si une erreur se produit lors de l'accès à la
+     *                      base de données ou lors de l'exécution de la requête.
+     */
     public void updateProject(Projet projet) throws SQLException {
         String query = "UPDATE projets SET nomProjet = ?, surface = ?, tvaProjet = ?, margebeneficiaire = ?, couttotal = ?, etatprojet = ?::etat_projet_enum WHERE id = ?";
 
@@ -77,6 +94,15 @@ public class ProjetDAOImp implements ProjetDAO {
     }
 
 
+    /**
+     * Récupère tous les projets de la base de données.
+     *
+     * @return un `HashMap<Integer, Projet>` contenant tous les projets
+     *         récupérés, où la clé est l'identifiant du projet et la valeur
+     *         est l'objet `Projet` correspondant.
+     * @throws SQLException si une erreur se produit lors de l'accès à la
+     *                      base de données ou lors de l'exécution de la requête.
+     */
     public HashMap<Integer, Projet> getAllProjets() throws SQLException {
         HashMap<Integer, Projet> projets = new HashMap<>();
         String query = "SELECT * FROM projets";
@@ -114,25 +140,16 @@ public class ProjetDAOImp implements ProjetDAO {
         return projets;
     }
 
-    public void delete(int id) throws SQLException {
-        String query = "DELETE FROM projets WHERE id = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, id);
-
-            int rowsAffected = stmt.executeUpdate();
-
-            if (rowsAffected > 0) {
-                System.out.println("Le projet avec l'ID " + id + " a été supprimé avec succès.");
-            } else {
-                System.out.println("Aucun projet trouvé avec l'ID " + id + ".");
-            }
-        } catch (SQLException e) {
-            throw new SQLException("Erreur lors de la suppression du projet: " + e.getMessage(), e);
-        }
-    }
-
-
+    /**
+     * Récupère un projet à partir de son identifiant.
+     *
+     * @param id l'identifiant du projet à récupérer.
+     * @return un objet `Projet` contenant les informations du projet trouvé,
+     *         ou `null` si aucun projet n'est associé à l'identifiant.
+     * @throws SQLException si une erreur se produit lors de l'accès à la
+     *                      base de données ou lors de l'exécution de la requête.
+     */
     public Projet getProjetById(int id) throws SQLException {
         Projet projet = null;
         String query = "SELECT * FROM projets WHERE id = ?";
@@ -168,6 +185,26 @@ public class ProjetDAOImp implements ProjetDAO {
 
         return projet;
     }
+
+
+    public void delete(int id) throws SQLException {
+        String query = "DELETE FROM projets WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id);
+
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Le projet avec l'ID " + id + " a été supprimé avec succès.");
+            } else {
+                System.out.println("Aucun projet trouvé avec l'ID " + id + ".");
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Erreur lors de la suppression du projet: " + e.getMessage(), e);
+        }
+    }
+
 
 
 

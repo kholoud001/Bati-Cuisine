@@ -20,6 +20,13 @@ public class DevisDAOImp implements DevisDAO {
         this.connection= connection;
     }
 
+    /**
+     * Ajoute un nouveau devis à la base de données.
+     *
+     * @param devis l'objet Devis à ajouter à la base de données.
+     * @throws SQLException si une erreur se produit lors de l'accès à la
+     *                      base de données ou lors de l'exécution de la requête.
+     */
     public void add(Devis devis) throws SQLException {
         String query="INSERT INTO devis(montantEstime,dateEmission,dateValidite,accepte,projet_id) VALUES(?,?,?,?,?)";
 
@@ -34,6 +41,93 @@ public class DevisDAOImp implements DevisDAO {
             System.out.println(e.getMessage());
         }
     }
+
+
+    /**
+     * Récupère un devis associé à un identifiant de projet donné.
+     *
+     * @param projetId l'identifiant du projet pour lequel récupérer le devis.
+     * @return un objet `Devis` associé au projet donné, ou `null` si aucun
+     *         devis n'est trouvé pour cet identifiant de projet.
+     * @throws SQLException si une erreur se produit lors de l'accès à la
+     *                      base de données ou lors de l'exécution de la requête.
+     */
+    public Devis getDevisByProjetId(int projetId) throws SQLException {
+        Devis devis = null;
+        String query = "SELECT * FROM devis WHERE projet_id = ?";
+        ProjetDAO projetDAO = new ProjetDAOImp(connection);
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, projetId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                Projet projet = projetDAO.getProjetById(projetId);
+                devis = new Devis(
+                        resultSet.getInt("id"),
+                        resultSet.getDouble("montantEstime"),
+                        resultSet.getDate("dateEmission").toLocalDate(),
+                        resultSet.getDate("dateValidite").toLocalDate(),
+                        resultSet.getBoolean("accepte"),
+                        projet
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération du devis : " + e.getMessage());
+        }
+        return devis;
+    }
+
+
+    /**
+     * Accepte un devis en mettant à jour son statut dans la base de données.
+     *
+     * @param devisId l'identifiant du devis à accepter.
+     * @throws SQLException si une erreur se produit lors de l'accès à la
+     *                      base de données ou lors de l'exécution de la requête.
+     */
+    public void accepterDevis(int devisId) throws SQLException {
+        String query = "UPDATE devis SET accepte = TRUE WHERE id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, devisId);
+            int rowsUpdated = statement.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("Le devis a été accepté avec succès.");
+            } else {
+                System.out.println("Aucun devis trouvé avec cet ID.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de l'acceptation du devis : " + e.getMessage());
+        }
+    }
+
+
+    /**
+     * Refuse un devis en mettant à jour son statut dans la base de données.
+     *
+     * @param devisId l'identifiant du devis à refuser.
+     * @throws SQLException si une erreur se produit lors de l'accès à la
+     *                      base de données ou lors de l'exécution de la requête.
+     */
+    public void refuserDevis(int devisId) throws SQLException {
+        String query = "UPDATE devis SET accepte = FALSE WHERE id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, devisId);
+            int rowsUpdated = statement.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("Le devis a été refusé avec succès.");
+            } else {
+                System.out.println("Aucun devis trouvé avec cet ID.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors du refus du devis : " + e.getMessage());
+        }
+    }
+
 
     public void update(Devis devis) throws SQLException {
         String query = "UPDATE devis SET montantEstime = ?, dateEmission = ?, dateValidite = ?, accepte = ?, projet_id = ? WHERE id = ?";
@@ -89,68 +183,5 @@ public class DevisDAOImp implements DevisDAO {
         return devisMap;
     }
 
-
-
-    public Devis getDevisByProjetId(int projetId) throws SQLException {
-        Devis devis = null;
-        String query = "SELECT * FROM devis WHERE projet_id = ?";
-        ProjetDAO projetDAO = new ProjetDAOImp(connection);
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, projetId);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                Projet projet = projetDAO.getProjetById(projetId);
-                devis = new Devis(
-                        resultSet.getInt("id"),
-                        resultSet.getDouble("montantEstime"),
-                        resultSet.getDate("dateEmission").toLocalDate(),
-                        resultSet.getDate("dateValidite").toLocalDate(),
-                        resultSet.getBoolean("accepte"),
-                        projet
-                );
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de la récupération du devis : " + e.getMessage());
-        }
-        return devis;
-    }
-
-
-    public void accepterDevis(int devisId) throws SQLException {
-        String query = "UPDATE devis SET accepte = TRUE WHERE id = ?";
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, devisId);
-            int rowsUpdated = statement.executeUpdate();
-
-            if (rowsUpdated > 0) {
-                System.out.println("Le devis a été accepté avec succès.");
-            } else {
-                System.out.println("Aucun devis trouvé avec cet ID.");
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de l'acceptation du devis : " + e.getMessage());
-        }
-    }
-
-
-    public void refuserDevis(int devisId) throws SQLException {
-        String query = "UPDATE devis SET accepte = FALSE WHERE id = ?";
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, devisId);
-            int rowsUpdated = statement.executeUpdate();
-
-            if (rowsUpdated > 0) {
-                System.out.println("Le devis a été refusé avec succès.");
-            } else {
-                System.out.println("Aucun devis trouvé avec cet ID.");
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors du refus du devis : " + e.getMessage());
-        }
-    }
 
 }

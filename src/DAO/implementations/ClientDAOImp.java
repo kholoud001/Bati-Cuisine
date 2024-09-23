@@ -22,6 +22,13 @@ public class ClientDAOImp implements ClientDAO {
         this.connection= connection;
     }
 
+    /**
+     * Ajoute un nouveau client à la base de données.
+     *
+     * @param client l'objet Client à ajouter à la base de données.
+     * @throws SQLException si une erreur se produit lors de l'accès à la
+     *                      base de données ou lors de l'exécution de la requête.
+     */
     public void add(Client client) throws SQLException {
         String query = "INSERT INTO clients (nom, adresse, telephone, estprofessionel) VALUES (?, ?, ?,?)";
 
@@ -40,6 +47,15 @@ public class ClientDAOImp implements ClientDAO {
 
 
 
+    /**
+     * Récupère un client à partir de son identifiant.
+     *
+     * @param id l'identifiant du client à récupérer.
+     * @return un `Optional<Client>` contenant le client trouvé, ou un
+     *         `Optional` vide si aucun client n'est associé à l'identifiant.
+     * @throws SQLException si une erreur se produit lors de l'accès à la
+     *                      base de données ou lors de l'exécution de la requête.
+     */
     public Optional<Client> getById(int id) throws SQLException {
         String query = "SELECT * FROM clients WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -61,6 +77,17 @@ public class ClientDAOImp implements ClientDAO {
         return Optional.empty();
     }
 
+
+    /**
+     * Récupère une liste de clients correspondant à un nom donné.
+     *
+     * @param name le nom du client à rechercher, sans tenir compte de la casse.
+     * @return un `HashMap<Integer, Client>` contenant les clients trouvés,
+     *         où la clé est l'identifiant du client. Si aucun client n'est
+     *         trouvé, un `HashMap` vide est retourné.
+     * @throws SQLException si une erreur se produit lors de l'accès à la
+     *                      base de données ou lors de l'exécution de la requête.
+     */
     public HashMap<Integer, Client> getByName( String name) throws SQLException {
         String query="SELECT * FROM clients";
         HashMap<Integer,Client> clientHashMap = new HashMap<>();

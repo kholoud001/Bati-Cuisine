@@ -21,6 +21,13 @@ public class MainOeuvreDAOImp implements MainOeuvreDAO {
 
     }
 
+    /**
+     * Ajoute une nouvelle main d'œuvre à la base de données.
+     *
+     * @param mainOeuvre l'objet `MainOeuvre` contenant les informations à ajouter.
+     * @throws SQLException si une erreur se produit lors de l'accès à la
+     *                      base de données ou lors de l'exécution de la requête.
+     */
     public void add(MainOeuvre mainOeuvre) throws SQLException {
         String query = "INSERT INTO main_oeuvres (nom, tauxTVA, typeComposant, projet_id, " +
                 "taux_horaire, heures_travail, productivite_ouvrier) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -40,6 +47,17 @@ public class MainOeuvreDAOImp implements MainOeuvreDAO {
         }
     }
 
+
+    /**
+     * Récupère toutes les mains d'œuvre associées à un projet donné.
+     *
+     * @param projet l'objet `Projet` dont l'identifiant est utilisé pour filtrer
+     *               les mains d'œuvre.
+     * @return une collection de `MainOeuvre` associées au projet, ou une collection
+     *         vide si aucune main d'œuvre n'est trouvée.
+     * @throws SQLException si une erreur se produit lors de l'accès à la
+     *                      base de données ou lors de l'exécution de la requête.
+     */
     public Collection<MainOeuvre> getMainOeuvreByProjectId(Projet projet) throws SQLException {
            String query="SELECT * FROM main_oeuvres WHERE projet_id=?";
            Collection<MainOeuvre> mains =new ArrayList<MainOeuvre>();

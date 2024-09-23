@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Optional;
 
 public class ProjetDAOImp implements ProjetDAO {
@@ -76,21 +77,56 @@ public class ProjetDAOImp implements ProjetDAO {
     }
 
 
+    public HashMap<Integer, Projet> getAllProjets() throws SQLException {
+        HashMap<Integer, Projet> projets = new HashMap<>();
+        String query = "SELECT * FROM projets";
+        ClientDAOImp clientDAOImp = new ClientDAOImp(connection);
+
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                int clientId = rs.getInt("client_id");
+                Optional<Client> optionalClient = clientDAOImp.getById(clientId);
+
+                if (optionalClient.isPresent()) {
+                    Client client = optionalClient.get();
+
+                    Projet projet = new Projet(
+                            rs.getInt("id"),
+                            rs.getString("nomprojet"),
+                            rs.getDouble("surface"),
+                            rs.getDouble("tvaprojet"),
+                            rs.getDouble("margebeneficiaire"),
+                            rs.getDouble("couttotal"),
+                            EtatProjet.valueOf(rs.getString("etatprojet")),
+                            client
+                    );
+
+                    projets.put(rs.getInt("id"), projet);
+                } else {
+                    System.out.println("Client not found for project ID: " + rs.getInt("id"));
+                }
+            }
+        }
+
+        return projets;
+    }
+
     public Projet getProjetById(int id) throws SQLException {
         Projet projet = null;
         String query = "SELECT * FROM projets WHERE id = ?";
 
-        // Initialize clientDAOImp (assuming you have access to the required connection)
-        ClientDAOImp clientDAOImp = new ClientDAOImp(connection); // Pass the connection if required
+        ClientDAOImp clientDAOImp = new ClientDAOImp(connection);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                // Fetch the client using the client ID from the project result set
                 int clientId = rs.getInt("client_id");
-                Optional<Client> optionalClient = clientDAOImp.getById(clientId);  // Now clientDAOImp is initialized
+                Optional<Client> optionalClient = clientDAOImp.getById(clientId);
 
                 if (optionalClient.isPresent()) {
                     Client client = optionalClient.get();
@@ -113,5 +149,7 @@ public class ProjetDAOImp implements ProjetDAO {
 
         return projet;
     }
+
+
 
 }

@@ -6,6 +6,7 @@ import repositories.interfaces.ProjetRep;
 import services.interfaces.ProjetService;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class ProjetServiceImp implements ProjetService {
 
@@ -25,6 +26,10 @@ public class ProjetServiceImp implements ProjetService {
 
     public Projet getProjectById(int id) throws SQLException {
         return projetRep.getProjetById(id);
+    }
+
+    public HashMap<Integer, Projet> getAllProjets() throws SQLException{
+        return projetRep.getProjets();
     }
 
 }

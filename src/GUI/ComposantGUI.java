@@ -62,11 +62,11 @@ public class ComposantGUI {
         double coef=scanner.nextDouble();
         scanner.nextLine();
 
-//        System.out.print("Entrez le taux TVA du matériel: ");
-//        double tva=scanner.nextDouble();
-//        scanner.nextLine();
+        System.out.print("Entrez le taux TVA du matériel: ");
+        double tva=scanner.nextDouble();
+        scanner.nextLine();
 
-        Materiel materiel= new Materiel(nomMat,0,"Materiel",projet,cout_unitaire,cout_tranport,coef,quantite);
+        Materiel materiel= new Materiel(nomMat,tva,"Materiel",projet,cout_unitaire,cout_tranport,coef,quantite);
         materielService.addMateriel(materiel);
         System.out.println("\nMatériau ajouté avec succès !\n");
     }
@@ -90,11 +90,11 @@ public class ComposantGUI {
         double facteur = scanner.nextDouble();
         scanner.nextLine();
 
-//        System.out.print("Entrez le taux TVA du main d'oeuvre: ");
-//        double tva=scanner.nextDouble();
-//        scanner.nextLine();
+        System.out.print("Entrez le taux TVA du main d'oeuvre: ");
+        double tva=scanner.nextDouble();
+        scanner.nextLine();
 
-        MainOeuvre mainOeuvre = new MainOeuvre(type,0,"Main-d'oeuvre",projet,taux,heure,facteur);
+        MainOeuvre mainOeuvre = new MainOeuvre(type,tva,"Main-d'oeuvre",projet,taux,heure,facteur);
         mainOeuvreService.createMainOeuvre(mainOeuvre);
         System.out.println("\nMain-d'œuvre ajoutée avec succès !\n");
 

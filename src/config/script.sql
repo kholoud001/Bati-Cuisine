@@ -24,12 +24,12 @@ CREATE TABLE IF NOT EXISTS projets(
 
 -- Devis Table
 CREATE TABLE IF NOT EXISTS devis(
-    id SERIAL PRIMARY KEY,
-    montantEstime DOUBLE PRECISION,
-    dateEmission DATE,
-    dateValidite DATE,
-    accepte BOOLEAN,
-    projet_id INT NOT NULL REFERENCES projets(id) ON DELETE CASCADE
+                                    id SERIAL PRIMARY KEY,
+                                    montantEstime DOUBLE PRECISION,
+                                    dateEmission DATE,
+                                    dateValidite DATE,
+                                    accepte BOOLEAN,
+                                    projet_id INT NOT NULL REFERENCES projets(id) ON DELETE CASCADE
 );
 
 

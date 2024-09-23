@@ -30,7 +30,8 @@ public class ClientGUI {
         System.out.println("Souhaitez-vous chercher un client existant ou en ajouter un nouveau ?");
         System.out.println("1. Chercher un client existant");
         System.out.println("2. Ajouter un nouveau client");
-        System.out.println("3. Revenir au menu principal");
+        System.out.println("3. Accepter ou refuser devis");
+        System.out.println("0. Revenir au menu principal");
         System.out.print("Choisissez une option : ");
 
         int option=scanner.nextInt();
@@ -42,7 +43,7 @@ public class ClientGUI {
             case 2:
                 addClient();
                 break;
-            case 3:
+            case 0:
                 exit=true;
                 break;
             default:
@@ -73,19 +74,19 @@ public class ClientGUI {
     }
 
 
-    public Optional<Client> viewClient(int clientId) throws SQLException {
-        Optional<Client> clientOptional = clientService.getClientById(clientId);
-        if (clientOptional.isPresent()) {
-            Client client = clientOptional.get();
-            System.out.println("Client ID: " + client.getId());
-            System.out.println("Name: " + client.getName());
-            System.out.println("Telephone: " + client.getTelephone());
-            System.out.println("Professional: " + client.isEstProfessionel());
-        } else {
-            System.out.println("Client not found.");
-        }
-        return clientOptional;
-    }
+//    public Optional<Client> viewClient(int clientId) throws SQLException {
+//        Optional<Client> clientOptional = clientService.getClientById(clientId);
+//        if (clientOptional.isPresent()) {
+//            Client client = clientOptional.get();
+//            System.out.println("Client ID: " + client.getId());
+//            System.out.println("Name: " + client.getName());
+//            System.out.println("Telephone: " + client.getTelephone());
+//            System.out.println("Professional: " + client.isEstProfessionel());
+//        } else {
+//            System.out.println("Client not found.");
+//        }
+//        return clientOptional;
+//    }
 
 
     public void searchClientByName() throws SQLException {
@@ -93,7 +94,7 @@ public class ClientGUI {
         System.out.print("Entrez le nom du client : ");
         String clientName = scanner.nextLine();
 
-        HashMap<Integer, Client> clientHashMap = clientService.getClientByName(clientName); // Ensure the method name is consistent
+        HashMap<Integer, Client> clientHashMap = clientService.getClientByName(clientName);
         if (clientHashMap.isEmpty()) {
             System.out.println("Client non trouvé");
             return;
@@ -122,4 +123,5 @@ public class ClientGUI {
             }
         }
     }
+
 }

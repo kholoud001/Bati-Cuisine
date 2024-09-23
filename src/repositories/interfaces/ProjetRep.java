@@ -7,4 +7,5 @@ import java.sql.SQLException;
 public interface ProjetRep {
     Projet save(Projet projet) throws SQLException;
     void update(Projet projet) throws SQLException;
+    Projet getProjetById(int id) throws SQLException;
 }

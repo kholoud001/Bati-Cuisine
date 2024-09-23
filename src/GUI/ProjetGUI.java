@@ -171,6 +171,52 @@ public class ProjetGUI {
         projet.setCoutTotal(coutTotalAvecTVAProjet);
     }
 
+    public void coutProjet() throws SQLException {
+        System.out.print("Entrez l'ID du projet pour calculer le coût: ");
+        int projetId = scanner.nextInt();
+        scanner.nextLine();
+
+        // Fetch the project by ID
+        Projet projet = projetService.getProjectById(projetId);
+        if (projet == null) {
+            System.out.println("Projet non trouvé.");
+            return;
+        }
+
+        System.out.println("\n--- Détails du Projet ---");
+        System.out.printf("Nom du projet : %s\n", projet.getNomProjet());
+        System.out.printf("Surface : %.2f m²\n", projet.getSurface());
+
+        // Get all materials and calculate total cost
+        Collection<Materiel> materiaux = materielService.getAllMaterielByProjectId(projet);
+        double coutMateriaux = coutService.totalCostMateriel(materiaux);
+        System.out.println("\n--- Coûts des Matériaux ---");
+        for (Materiel materiel : materiaux) {
+            double cout = coutService.coutMateriel(materiel);
+            double tvaMateriel = materiel.getTauxTVA();
+            cout *= (1 + tvaMateriel / 100); // Apply TVA
+            System.out.printf("- %s : %.2f € (TVA incluse)\n", materiel.getNom(), cout);
+        }
+        System.out.printf("**Coût total des matériaux : %.2f €**\n", coutMateriaux);
+
+        // Get all labor and calculate total cost
+        Collection<MainOeuvre> mainOeuvres = mainOeuvreService.getAllMainOeuvre(projet);
+        double coutMainOeuvre = coutService.totalCostMainOeuvre(mainOeuvres);
+        System.out.println("\n--- Coûts de la Main-d'œuvre ---");
+        for (MainOeuvre mo : mainOeuvres) {
+            double cout = coutService.coutMainOeuvre(mo);
+            double tvaMainOeuvre = mo.getTauxTVA();
+            cout *= (1 + tvaMainOeuvre / 100); // Apply TVA
+            System.out.printf("- %s : %.2f € (TVA incluse)\n", mo.getNom(), cout);
+        }
+        System.out.printf("**Coût total de la main-d'œuvre : %.2f €**\n", coutMainOeuvre);
+
+        // Calculate total cost
+        double coutTotal = coutMateriaux + coutMainOeuvre;
+        System.out.printf("**Coût total du projet : %.2f €**\n", coutTotal);
+    }
+
+
 
 
 

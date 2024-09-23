@@ -38,9 +38,7 @@ public class ProjetGUI {
         this.mainOeuvreService=mainOeuvreService;
         this.coutService=coutService;
         this.scanner=scanner;
-
     }
-
 
 
     public void addProjet(Client client) throws SQLException {
@@ -108,7 +106,6 @@ public class ProjetGUI {
         //System.out.println("Project added successfully.");
     }
 
-
     public void calculCout(Projet projet, double tvaProjet, double margeBeneficiaire) throws SQLException {
         System.out.println("\n--- Résultat du Calcul ---\n");
         System.out.printf("Nom du projet : %s \n", projet.getNomProjet());
@@ -166,7 +163,7 @@ public class ProjetGUI {
         projet.setCoutTotal(coutTotalAvecTVAProjet);
     }
 
-    public void coutProjet() throws SQLException {
+    public void coutProjet() throws Exception {
         HashMap<Integer, Projet> filteredProjets = SearchProject();
 
         if (filteredProjets.isEmpty()) {
@@ -201,7 +198,9 @@ public class ProjetGUI {
         System.out.printf("**Coût total de la main-d'œuvre : %.2f €**\n", coutMainOeuvre);
 
         double coutTotal = coutMateriaux + coutMainOeuvre;
-        System.out.printf("**Coût total du projet : %.2f €**\n", coutTotal);
+        System.out.printf("**Coût total du projet : %.2f €**\n\n", coutTotal);
+
+        devisGUI.afficherEtGererDevis(filteredProjets);
     }
 
     public HashMap<Integer,Projet> DisplayallProjects() throws SQLException {

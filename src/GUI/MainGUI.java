@@ -21,7 +21,7 @@ public class MainGUI {
 
     }
 
-    public void displayMenu() throws SQLException {
+    public void displayMenu() throws Exception {
         boolean exit = false;
         while(!exit){
             System.out.println("=== Menu Principal ===");

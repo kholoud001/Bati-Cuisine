@@ -118,12 +118,13 @@ public class ProjetGUI {
         System.out.println("\n--- Détail des Coûts ---\n1. Matériaux :");
         Collection<Materiel> materiaux = materielService.getAllMaterielByProjectId(projet);
         double coutMateriaux = 0;
+        double cout=0;
         for (Materiel materiel : materiaux) {
-            double cout = coutService.coutMateriel(materiel);  // Calcul du coût sans TVA
+            cout = coutService.coutMateriel(materiel);  // Calcul du coût sans TVA
             double coutAvecTVA = cout * (1 + materiel.getTauxTVA() / 100);  // Application de la TVA spécifique
             coutMateriaux += coutAvecTVA;  // Ajout au coût total
-            System.out.printf("- %s : %.2f € (quantité : %.2f, coût unitaire : %.2f €/unité, TVA : %.2f%%, coût avec TVA : %.2f €)\n",
-                    materiel.getNom(), cout, materiel.getQuantite(), materiel.getCoutUnitaire(), materiel.getTauxTVA(), coutAvecTVA);
+            System.out.printf("- %s : %.2f € (quantité : %.2f, coût unitaire : %.2f €/unité, qualité : %.2f , transport:  %.2f € )\n",
+                    materiel.getNom(), cout, materiel.getQuantite(), materiel.getCoutUnitaire(), materiel.getCoefficientQualite(), materiel.getCoutTransport());
         }
         System.out.printf("**Coût total des matériaux avant TVA : %.2f €**\n", cout);
         System.out.printf("**Coût total des matériaux avec TVA : %.2f €**\n", coutMateriaux);
@@ -132,12 +133,13 @@ public class ProjetGUI {
         System.out.println("\n2. Main-d'œuvre :");
         Collection<MainOeuvre> mainOeuvres = mainOeuvreService.getAllMainOeuvre(projet);
         double coutMainOeuvre = 0;
+
         for (MainOeuvre mo : mainOeuvres) {
-            double cout = coutService.coutMainOeuvre(mo);  // Calcul du coût sans TVA
+            cout = coutService.coutMainOeuvre(mo);  // Calcul du coût sans TVA
             double coutAvecTVA = cout * (1 + mo.getTauxTVA() / 100);  // Application de la TVA spécifique
             coutMainOeuvre += coutAvecTVA;  // Ajout au coût total
-            System.out.printf("- %s : %.2f € (taux horaire : %.2f €/h, heures travaillées : %.2f h, TVA : %.2f%%, coût avec TVA : %.2f €)\n",
-                    mo.getNom(), cout, mo.getTauxHoraire(), mo.getHeuresTravail(), mo.getTauxTVA(), coutAvecTVA);
+            System.out.printf("- %s : %.2f € (taux horaire : %.2f €/h, heures travaillées : %.2f h,  productivité : %.2f )\n",
+                    mo.getNom(), cout, mo.getTauxHoraire(), mo.getHeuresTravail(), mo.getProductiviteOuvrier());
         }
         System.out.printf("**Coût total de la main-d'œuvre avant TVA : %.2f €**\n", cout);
         System.out.printf("**Coût total de la main-d'œuvre avec TVA : %.2f €**\n", coutMainOeuvre);

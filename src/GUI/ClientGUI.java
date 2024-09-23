@@ -4,6 +4,7 @@ package GUI;
 import entities.Client;
 
 import services.interfaces.ClientService;
+import utils.ValidateUtils;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -30,7 +31,6 @@ public class ClientGUI {
         System.out.println("Souhaitez-vous chercher un client existant ou en ajouter un nouveau ?");
         System.out.println("1. Chercher un client existant");
         System.out.println("2. Ajouter un nouveau client");
-        System.out.println("3. Accepter ou refuser devis");
         System.out.println("0. Revenir au menu principal");
         System.out.print("Choisissez une option : ");
 
@@ -55,22 +55,42 @@ public class ClientGUI {
 
     public void addClient() throws SQLException {
 
-        System.out.println("******* Add client ******* \n");
-        System.out.println("Enter client name: ");
-        String name = scanner.nextLine();
+        System.out.println("******* Ajouter client ******* \n");
+        String nom;
+        while (true) {
+            System.out.println("Entrer le nom du client: ");
+            nom = scanner.nextLine();
+            nom = ValidateUtils.validateNom(nom);
+            if (nom != null) {
+                break;
+            }
+        }
 
-        System.out.println("Enter client address: ");
-        String address = scanner.nextLine();
+        String address;
+        while(true) {
+            System.out.println("Entrer l'adresse du client: ");
+            address= scanner.nextLine();
+            ValidateUtils.isNotNullOrEmpty(address);
+            if (address != null) {
+                break;
+            }
+        }
 
-        System.out.println("Enter client telephone: ");
-        String telephone = scanner.nextLine();
+        String telephone;
+        while (true) {
+            System.out.println("Entrer le numéro de téléphone du client: ");
+            telephone = scanner.nextLine();
+            if (ValidateUtils.isValidPhone(telephone)) {
+                break;
+            }
+        }
 
-        System.out.println("Is the client a professional? (true/false): ");
+        System.out.println("Le client est-il un professionnel ? (vrai/faux) :");
         boolean estProfessionel = scanner.nextBoolean();
 
-        Client client = new Client(name, address, telephone,estProfessionel);
+        Client client = new Client(nom, address, telephone,estProfessionel);
         clientService.createClient(client);
-        System.out.println("Client added successfully.");
+        //System.out.println("Client added successfully.");
     }
 
 

@@ -11,6 +11,7 @@ import services.interfaces.CoutService;
 import services.interfaces.MainOeuvreService;
 import services.interfaces.MaterielService;
 import services.interfaces.ProjetService;
+import utils.ValidateUtils;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -43,8 +44,16 @@ public class ProjetGUI {
 
     public void addProjet(Client client) throws SQLException {
         System.out.println("--- Création d'un Nouveau Projet ---");
-        System.out.print("Entrez le nom du projet: ");
-        String nomProjet = scanner.nextLine();
+        String nomProjet;
+        while(true) {
+            System.out.print("Entrez le nom du projet: ");
+            nomProjet = scanner.nextLine();
+            ValidateUtils.isNotNullOrEmpty(nomProjet);
+            if (nomProjet != null) {
+                break;
+            }
+        }
+
 
         System.out.print("Entrez la surface de la cuisine (en m²) : ");
         double surface = scanner.nextDouble();

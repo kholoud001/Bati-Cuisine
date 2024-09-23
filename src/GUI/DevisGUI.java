@@ -65,7 +65,7 @@ public class DevisGUI {
     }
 
     public void afficherEtGererDevis(HashMap<Integer, Projet> filteredProjets) throws Exception {
-        System.out.println("Souhaitez-vous afficher le devis pour l'un de ces projets ? (oui/non)");
+        System.out.println("Souhaitez-vous afficher le devis pour ce projet ? (oui/non)");
         String reponse = scanner.nextLine();
 
         if (reponse.equalsIgnoreCase("oui")) {

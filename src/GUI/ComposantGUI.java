@@ -5,6 +5,7 @@ import entities.Materiel;
 import entities.Projet;
 import services.interfaces.MainOeuvreService;
 import services.interfaces.MaterielService;
+import utils.ValidateUtils;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -43,8 +44,15 @@ public class ComposantGUI {
     //add material
     private void addMaterial(Projet projet) throws SQLException {
         System.out.println("\n--- Ajout des matériaux ---\n");
-        System.out.print("Entrez le nom du matériau :");
-        String nomMat = scanner.nextLine();
+        String nomMat;
+        while(true) {
+            System.out.print("Entrez le nom du matériau :");
+            nomMat = scanner.nextLine();
+            ValidateUtils.isNotNullOrEmpty(nomMat);
+            if (nomMat != null) {
+                break;
+            }
+        }
 
         System.out.print("Entrez la quantité de ce matériau (en m²) : ");
         double quantite = scanner.nextDouble();
@@ -75,8 +83,15 @@ public class ComposantGUI {
     // add main oeuvre
     private void addMainOeuvre(Projet projet) throws SQLException {
         System.out.println("\n--- Ajout de la main-d'œuvre ---\n");
-        System.out.print("Entrez le type de main-d'œuvre (e.g., Ouvrier de base, Spécialiste) : ");
-        String type = scanner.nextLine();
+        String type;
+        while(true) {
+            System.out.print("Entrez le type de main-d'œuvre (e.g., Ouvrier de base, Spécialiste) : ");
+            type = scanner.nextLine();
+            ValidateUtils.isNotNullOrEmpty(type);
+            if (type != null) {
+                break;
+            }
+        }
 
         System.out.print("Entrez le taux horaire de cette main-d'œuvre (€/h) : ");
         double taux = scanner.nextDouble();

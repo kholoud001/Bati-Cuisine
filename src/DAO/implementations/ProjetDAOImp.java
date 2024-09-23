@@ -2,6 +2,7 @@ package DAO.implementations;
 
 import DAO.interfaces.ProjetDAO;
 import config.DatabaseConnection;
+import entities.Client;
 import entities.Projet;
 import enums.EtatProjet;
 
@@ -9,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class ProjetDAOImp implements ProjetDAO {
 
@@ -72,4 +74,44 @@ public class ProjetDAOImp implements ProjetDAO {
             throw new SQLException("Error updating the project: " + e.getMessage(), e);
         }
     }
+
+
+    public Projet getProjetById(int id) throws SQLException {
+        Projet projet = null;
+        String query = "SELECT * FROM projets WHERE id = ?";
+
+        // Initialize clientDAOImp (assuming you have access to the required connection)
+        ClientDAOImp clientDAOImp = new ClientDAOImp(connection); // Pass the connection if required
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                // Fetch the client using the client ID from the project result set
+                int clientId = rs.getInt("client_id");
+                Optional<Client> optionalClient = clientDAOImp.getById(clientId);  // Now clientDAOImp is initialized
+
+                if (optionalClient.isPresent()) {
+                    Client client = optionalClient.get();
+
+                    projet = new Projet(
+                            rs.getInt("id"),
+                            rs.getString("nomprojet"),
+                            rs.getDouble("surface"),
+                            rs.getDouble("tvaprojet"),
+                            rs.getDouble("margebeneficiaire"),
+                            rs.getDouble("couttotal"),
+                            EtatProjet.valueOf(rs.getString("etatprojet")),
+                            client
+                    );
+                } else {
+                    System.out.println("Client not found for project.");
+                }
+            }
+        }
+
+        return projet;
+    }
+
 }

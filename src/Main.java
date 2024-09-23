@@ -45,7 +45,7 @@ public class Main {
         ClientService clientService = new ClientServiceImp(clientRep);
         ClientGUI clientGUI= new ClientGUI(sc,clientService,projetGUI);
 
-        MainGUI mainGUI = new MainGUI(sc,clientGUI);
+        MainGUI mainGUI = new MainGUI(sc,clientGUI,projetGUI);
         //mainGUI.ConnectionToDB();
         mainGUI.displayMenu();
         sc.close();

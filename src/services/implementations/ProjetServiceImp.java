@@ -23,5 +23,8 @@ public class ProjetServiceImp implements ProjetService {
         projetRep.update(projet);
     }
 
+    public Projet getProjectById(int id) throws SQLException {
+        return projetRep.getProjetById(id);
+    }
 
 }

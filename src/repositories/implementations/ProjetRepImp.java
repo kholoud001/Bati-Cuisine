@@ -22,4 +22,8 @@ public class ProjetRepImp implements ProjetRep {
     public void update(Projet projet) throws SQLException {
         projetDAO.updateProject(projet);
     }
+
+    public Projet getProjetById(int id) throws SQLException {
+        return projetDAO.getProjetById(id);
+    }
 }

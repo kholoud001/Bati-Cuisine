@@ -11,12 +11,13 @@ public class MainGUI {
 
 
     private Scanner scanner;
-    ClientGUI clientGUI;
+    private ClientGUI clientGUI;
+    private ProjetGUI projetGUI;
 
-
-    public MainGUI(Scanner scanner, ClientGUI clientGUI) throws SQLException {
+    public MainGUI(Scanner scanner, ClientGUI clientGUI, ProjetGUI projetGUI) throws SQLException {
         this.scanner=scanner;
         this.clientGUI = clientGUI;
+        this.projetGUI = projetGUI;
 
     }
 
@@ -38,6 +39,7 @@ public class MainGUI {
                 case "2":
                     break;
                 case "3":
+                    projetGUI.coutProjet();
                     break;
                 case "4":
                     exit =true;

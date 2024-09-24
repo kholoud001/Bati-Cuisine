@@ -2,6 +2,7 @@ package GUI;
 
 import entities.Devis;
 import entities.Projet;
+import enums.EtatProjet;
 import services.interfaces.DevisService;
 
 import java.sql.SQLException;
@@ -93,6 +94,7 @@ public class DevisGUI {
                         System.out.println("Devis accepté.");
                     } else {
                         devisService.refuserDevis(devis.getId());
+                        projetChoisi.setEtatProjet(EtatProjet.valueOf("ANNULE"));
                         System.out.println("Devis refusé.");
                     }
                 } else {

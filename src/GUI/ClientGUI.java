@@ -70,11 +70,11 @@ public class ClientGUI {
         while(true) {
             System.out.println("Entrer l'adresse du client: ");
             address= scanner.nextLine();
-            ValidateUtils.isNotNullOrEmpty(address);
-            if (address != null) {
+            if (ValidateUtils.isNotNullOrEmpty(address)) {
                 break;
             }
         }
+
 
         String telephone;
         while (true) {
@@ -85,8 +85,21 @@ public class ClientGUI {
             }
         }
 
-        System.out.println("Le client est-il un professionnel ? (vrai/faux) :");
-        boolean estProfessionel = scanner.nextBoolean();
+        boolean estProfessionel;
+        while (true) {
+            System.out.println("Le client est-il un professionnel ? (vrai/faux) : ");
+            String input = scanner.nextLine();
+
+            if (input.equalsIgnoreCase("vrai")) {
+                estProfessionel = true;
+                break;
+            } else if (input.equalsIgnoreCase("faux")) {
+                estProfessionel = false;
+                break;
+            } else {
+                System.out.println("Entrée invalide. Veuillez entrer 'vrai' ou 'faux'.");
+            }
+        }
 
         Client client = new Client(nom, address, telephone,estProfessionel);
         clientService.createClient(client);

@@ -32,12 +32,14 @@ public class Main {
         DevisDAO devisDAO =new DevisDAOImp(connection);
         DevisRep devisRep = new DevisRepImp(devisDAO);
         DevisService devisService= new DevisServiceImp(devisRep);
-        DevisGUI devisGUI= new DevisGUI(devisService,sc);
+
 
 
         ProjetDAO projetDAO=new ProjetDAOImp(connection);
         ProjetRep projetRep = new ProjetRepImp(projetDAO);
         ProjetService projetService= new ProjetServiceImp(projetRep);
+        DevisGUI devisGUI= new DevisGUI(devisService,projetService,sc);
+
         ProjetGUI projetGUI= new ProjetGUI(sc,projetService,composantGUI,devisGUI,materielService,mainOeuvreService,coutService);
 
         ClientDAO clientDAO = new ClientDAOImp(connection);
@@ -47,7 +49,7 @@ public class Main {
 
         MainGUI mainGUI = new MainGUI(sc,clientGUI,projetGUI);
         //mainGUI.ConnectionToDB();
-        mainGUI.displayMenu();
+       mainGUI.displayMenu();
         sc.close();
 
 

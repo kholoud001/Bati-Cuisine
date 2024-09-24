@@ -35,7 +35,6 @@ public class ValidateUtils {
             System.out.println("ce champ ne peut pas être vide.");
         }
         return chaine;
-
     }
 
 

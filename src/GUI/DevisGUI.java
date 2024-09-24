@@ -4,6 +4,7 @@ import entities.Devis;
 import entities.Projet;
 import enums.EtatProjet;
 import services.interfaces.DevisService;
+import services.interfaces.ProjetService;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -15,11 +16,13 @@ public class DevisGUI {
 
     private  DevisService devisService;
     private  Scanner scanner;
+    private ProjetService projetService;
 
     private  DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    public DevisGUI(DevisService devisService,Scanner scanner) {
+    public DevisGUI(DevisService devisService, ProjetService projetService ,Scanner scanner) {
         this.devisService = devisService;
+        this.projetService = projetService;
         this.scanner = scanner;
     }
 
@@ -70,8 +73,6 @@ public class DevisGUI {
         String reponse = scanner.nextLine();
 
         if (reponse.equalsIgnoreCase("oui")) {
-
-
             Projet projetChoisi = filteredProjets.values().stream()
                     .findFirst()
                     .orElse(null);
@@ -85,7 +86,6 @@ public class DevisGUI {
                     System.out.printf("Date de validité : %s\n", devis.getDateValidite());
                     System.out.printf("Devis accepté : %s\n", devis.isAccepte() ? "Oui" : "Non");
 
-
                     System.out.println("Souhaitez-vous accepter le devis ? (oui/non)");
                     String acceptation = scanner.nextLine();
 
@@ -95,13 +95,15 @@ public class DevisGUI {
                     } else {
                         devisService.refuserDevis(devis.getId());
                         projetChoisi.setEtatProjet(EtatProjet.ANNULE);
-                        System.out.println("Devis refusé.");
+                        projetService.updateProject(projetChoisi);
+
+                        System.out.println("Devis refusé. Projet annulé.");
                     }
                 } else {
                     System.out.println("Aucun devis trouvé pour ce projet.");
                 }
             } else {
-                System.out.println("Aucun projet trouvé avec le nom : " + projetChoisi);
+                System.out.println("Aucun projet trouvé.");
             }
         }
     }

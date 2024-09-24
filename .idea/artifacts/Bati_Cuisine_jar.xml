@@ -3,7 +3,6 @@
     <output-path>$PROJECT_DIR$/out/artifacts/Bati_Cuisine_jar</output-path>
     <root id="archive" name="Bati-Cuisine.jar">
       <element id="module-output" name="Bati-Cuisine" />
-      <element id="library" level="project" name="postgresql-42.7.3" />
     </root>
   </artifact>
 </component>

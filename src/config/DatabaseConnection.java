@@ -11,12 +11,9 @@ public class DatabaseConnection {
     private String user = "postgres";
     private String password = "action";
 
-
     private DatabaseConnection() {
         try {
             this.connection = DriverManager.getConnection(url, user, password);
-            //System.out.println("Database connection established");
-
         } catch (SQLException exception) {
             System.out.println("Database Connection Creation Failed : " + exception.getMessage());
         }

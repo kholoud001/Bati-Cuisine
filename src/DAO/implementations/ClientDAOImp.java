@@ -45,8 +45,6 @@ public class ClientDAOImp implements ClientDAO {
     }
 
 
-
-
     /**
      * Récupère un client à partir de son identifiant.
      *

@@ -94,7 +94,7 @@ public class DevisGUI {
                         System.out.println("Devis accepté.");
                     } else {
                         devisService.refuserDevis(devis.getId());
-                        projetChoisi.setEtatProjet(EtatProjet.valueOf("ANNULE"));
+                        projetChoisi.setEtatProjet(EtatProjet.ANNULE);
                         System.out.println("Devis refusé.");
                     }
                 } else {
